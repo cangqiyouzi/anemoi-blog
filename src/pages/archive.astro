@@ -1,0 +1,104 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+// 按年月分组
+const grouped = new Map<string, typeof posts>();
+posts.forEach((post) => {
+  const date = post.data.date;
+  const key = `${date.getFullYear()}年${date.getMonth() + 1}月`;
+  if (!grouped.has(key)) grouped.set(key, []);
+  grouped.get(key)!.push(post);
+});
+
+function formatDate(date: Date) {
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${m}.${d}`;
+}
+---
+
+<BaseLayout title="归档 - anemoi-blog" description="按时间浏览所有文章">
+  <!-- 页面头部 -->
+  <section class="pt-32 pb-16 px-6 text-center">
+    <ScrollReveal>
+      <span class="text-xs text-anemoi-muted tracking-[0.3em] block mb-4">ARCHIVE</span>
+      <h1 class="text-4xl md:text-6xl font-display text-anemoi-deep tracking-wider mb-4">
+        时光归档
+      </h1>
+      <p class="text-anemoi-muted text-sm tracking-wider">
+        共 {posts.length} 篇文章
+      </p>
+    </ScrollReveal>
+  </section>
+  
+  <!-- 归档列表 -->
+  <section class="px-6 py-8 pb-24">
+    <div class="max-w-3xl mx-auto">
+      <div class="relative">
+        <!-- 时间线 -->
+        <div class="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-anemoi-accent/20 md:-translate-x-1/2"></div>
+        
+        {Array.from(grouped.entries()).map(([month, monthPosts], groupIndex) => (
+          <div class="mb-12 last:mb-0">
+            <!-- 月份标题 -->
+            <div class="relative flex items-center mb-8">
+              <div class="hidden md:block w-1/2 pr-8 text-right">
+                <ScrollReveal>
+                  <h2 class="text-2xl font-display text-anemoi-deep tracking-wider">
+                    {month}
+                  </h2>
+                </ScrollReveal>
+              </div>
+              <div class="absolute left-0 md:left-1/2 w-2 h-2 rounded-full bg-anemoi-accent/60 border-2 border-anemoi-bg md:-translate-x-1/2"></div>
+              <div class="md:hidden ml-6">
+                <ScrollReveal>
+                  <h2 class="text-2xl font-display text-anemoi-deep tracking-wider">
+                    {month}
+                  </h2>
+                </ScrollReveal>
+              </div>
+              <div class="hidden md:block w-1/2 pl-8">
+                <span class="text-sm text-anemoi-muted font-light">
+                  {monthPosts.length} 篇
+                </span>
+              </div>
+            </div>
+            
+            <!-- 文章列表 -->
+            <div class="space-y-4">
+              {monthPosts.map((post, index) => (
+                <div class={`relative flex items-start ${groupIndex % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                  <div class="hidden md:block md:w-1/2"></div>
+                  <div class="absolute left-0 md:left-1/2 w-1.5 h-1.5 rounded-full bg-anemoi-lavender/60 md:-translate-x-1/2 mt-2.5"></div>
+                  <div class="ml-6 md:ml-0 md:w-1/2 ${groupIndex % 2 === 0 ? 'md:pl-10' : 'md:pr-10 md:text-right'}">
+                    <ScrollReveal delay={index * 0.05}>
+                      <a 
+                        href={`/blog/${post.slug}/`}
+                        class="group block py-2"
+                      >
+                        <div class={`flex items-baseline gap-3 ${groupIndex % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+                          <time class="text-sm text-anemoi-muted font-light tracking-wider">
+                            {formatDate(post.data.date)}
+                          </time>
+                          <h3 class="text-base font-display text-anemoi-text group-hover:text-anemoi-accent transition-colors duration-300 leading-snug">
+                            {post.data.title}
+                          </h3>
+                        </div>
+                      </a>
+                    </ScrollReveal>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

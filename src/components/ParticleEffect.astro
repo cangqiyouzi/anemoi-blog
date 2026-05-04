@@ -1,82 +1,86 @@
 ---
-// 极轻量粒子动效 - 可关闭
+// 纯 CSS 花瓣飘落实效
+const PETAL_COUNT = 20;
+
+function generatePetalStyle(index: number): string {
+  const left = Math.random() * 100;
+  const delay = Math.random() * 15;
+  const duration = 10 + Math.random() * 10;
+  const size = 8 + Math.random() * 12;
+  const opacity = 0.3 + Math.random() * 0.4;
+  const drift = -20 + Math.random() * 40;
+  const rotate = Math.random() * 360;
+  
+  return `
+    left: ${left}%;
+    width: ${size}px;
+    height: ${size}px;
+    animation-delay: ${delay}s;
+    animation-duration: ${duration}s;
+    opacity: ${opacity};
+    --drift: ${drift}px;
+    --rotate: ${rotate}deg;
+  `;
+}
 ---
 
 <div id="particle-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden" aria-hidden="true">
-  <!-- 粒子由 JS 生成 -->
+  {Array.from({ length: PETAL_COUNT }).map((_, i) => (
+    <div 
+      class="petal"
+      style={generatePetalStyle(i)}
+    >
+      <svg 
+        viewBox="0 0 20 20" 
+        class="w-full h-full"
+        style="fill: rgba(197, 185, 212, 0.6);"
+      >
+        <ellipse cx="10" cy="10" rx="5" ry="8" transform="rotate(30 10 10)" />
+      </svg>
+    </div>
+  ))}
 </div>
 
-<script>
-  (function() {
-    // 检测用户是否偏好减少动画
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) return;
+<style is:global>
+  .petal {
+    position: fixed;
+    top: -20px;
+    animation-name: petalFall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    will-change: transform, opacity;
+  }
 
-    const container = document.getElementById('particle-container');
-    if (!container) return;
-
-    const PARTICLE_COUNT = 15;
-    const particles: HTMLDivElement[] = [];
-
-    function createParticle() {
-      const particle = document.createElement('div');
-      const size = Math.random() * 4 + 2;
-      const left = Math.random() * 100;
-      const duration = Math.random() * 15 + 10;
-      const delay = Math.random() * 10;
-
-      particle.style.cssText = `
-        position: absolute;
-        width: ${size}px;
-        height: ${size}px;
-        left: ${left}%;
-        top: -10px;
-        background: radial-gradient(circle, rgba(168, 196, 217, 0.4) 0%, transparent 70%);
-        border-radius: 50%;
-        opacity: 0;
-        animation: particleFall ${duration}s linear ${delay}s infinite;
-        pointer-events: none;
-      `;
-
-      return particle;
+  @keyframes petalFall {
+    0% {
+      transform: translateY(0) translateX(0) rotate(var(--rotate));
+      opacity: 0;
     }
-
-    // 添加关键帧动画
-    if (!document.getElementById('particle-styles')) {
-      const style = document.createElement('style');
-      style.id = 'particle-styles';
-      style.textContent = `
-        @keyframes particleFall {
-          0% {
-            opacity: 0;
-            transform: translateY(0) translateX(0);
-          }
-          10% {
-            opacity: 0.6;
-          }
-          90% {
-            opacity: 0.6;
-          }
-          100% {
-            opacity: 0;
-            transform: translateY(100vh) translateX(${Math.random() * 50 - 25}px);
-          }
-        }
-      `;
-      document.head.appendChild(style);
+    5% {
+      opacity: var(--opacity, 0.5);
     }
-
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const particle = createParticle();
-      particles.push(particle);
-      container.appendChild(particle);
+    25% {
+      transform: translateY(25vh) translateX(calc(var(--drift) * 0.3)) rotate(calc(var(--rotate) + 90deg));
     }
+    50% {
+      transform: translateY(50vh) translateX(calc(var(--drift) * 0.6)) rotate(calc(var(--rotate) + 180deg));
+    }
+    75% {
+      transform: translateY(75vh) translateX(var(--drift)) rotate(calc(var(--rotate) + 270deg));
+    }
+    95% {
+      opacity: var(--opacity, 0.5);
+    }
+    100% {
+      transform: translateY(110vh) translateX(calc(var(--drift) * 1.2)) rotate(calc(var(--rotate) + 360deg));
+      opacity: 0;
+    }
+  }
 
-    // 页面不可见时暂停动画（性能优化）
-    document.addEventListener('visibilitychange', () => {
-      particles.forEach(p => {
-        p.style.animationPlayState = document.hidden ? 'paused' : 'running';
-      });
-    });
-  })();
-</script>
+  @media (prefers-reduced-motion: reduce) {
+    .petal {
+      animation: none !important;
+      display: none !important;
+    }
+  }
+</style>

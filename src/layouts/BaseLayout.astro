@@ -1,11 +1,16 @@
 ---
+import { ViewTransitions } from 'astro:transitions';
+import Navbar from '../components/Navbar.astro';
+import BackToTop from '../components/BackToTop.astro';
+import ParticleEffect from '../components/ParticleEffect.astro';
+
 export interface Props {
   title: string;
   description?: string;
+  transparentNav?: boolean;
 }
 
-const { title, description = 'anemoi-blog - 个人博客' } = Astro.props;
-const currentPath = Astro.url.pathname;
+const { title, description = 'anemoi-blog - 个人博客', transparentNav = true } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -14,40 +19,50 @@ const currentPath = Astro.url.pathname;
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content={description} />
+  <meta name="generator" content={Astro.generator} />
   <title>{title}</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <ViewTransitions />
   <style is:global>
     @import '../styles/global.css';
   </style>
+  <script is:inline>
+    // 主题初始化（避免闪烁）
+    (function() {
+      function applyTheme() {
+        const stored = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDark = stored === 'dark' || (!stored && prefersDark);
+        if (isDark) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      }
+      
+      // 初始应用
+      applyTheme();
+      
+      // View Transitions 页面切换后重新应用
+      document.addEventListener('astro:after-swap', applyTheme);
+    })();
+  </script>
 </head>
-<body class="min-h-screen bg-anemoi-bg text-anemoi-text antialiased">
-  <!-- 极简顶部导航 -->
-  <nav class="fixed top-0 left-0 right-0 z-40 px-6 py-5 transition-colors duration-500 hover:bg-anemoi-bg/80">
-    <div class="max-w-6xl mx-auto flex items-center justify-between">
-      <a href="/" class="text-lg font-serif tracking-widest text-anemoi-text hover:text-anemoi-accent transition-colors">
-        anemoi
-      </a>
-      <div class="flex items-center gap-8 text-sm tracking-wider">
-        <a 
-          href="/" 
-          class={`transition-colors duration-300 ${currentPath === '/' ? 'text-anemoi-text' : 'text-anemoi-muted hover:text-anemoi-text'}`}
-        >
-          首页
-        </a>
-        <a 
-          href="/about/" 
-          class={`transition-colors duration-300 ${currentPath === '/about/' ? 'text-anemoi-text' : 'text-anemoi-muted hover:text-anemoi-text'}`}
-        >
-          关于
-        </a>
-      </div>
-    </div>
-  </nav>
+<body class="min-h-screen bg-anemoi-bg text-anemoi-text antialiased transition-colors duration-500">
+  <ParticleEffect />
+  
+  <Navbar transparent={transparentNav} />
   
   <slot />
   
-  <footer class="py-12 text-center text-anemoi-muted text-sm tracking-widest">
-    <p> anemoi-blog. All rights reserved.</p>
+  <footer class="py-16 text-center border-t border-anemoi-accent/10">
+    <div class="space-y-4">
+      <p class="font-display text-lg tracking-[0.15em] text-anemoi-text">anemoi</p>
+      <p class="text-anemoi-muted text-xs tracking-widest">风之所向，心之所往</p>
+      <p class="text-anemoi-muted/60 text-xs tracking-wider"> anemoi-blog. All rights reserved.</p>
+    </div>
   </footer>
+  
+  <BackToTop />
 </body>
 </html>

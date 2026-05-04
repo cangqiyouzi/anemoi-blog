@@ -1,0 +1,68 @@
+---
+export interface Props {
+  title: string;
+  url?: string;
+}
+
+const { title, url = Astro.url.toString() } = Astro.props;
+
+const encodedTitle = encodeURIComponent(title);
+const encodedUrl = encodeURIComponent(url);
+---
+
+<div class="flex items-center gap-4 mt-8">
+  <span class="text-xs text-anemoi-muted tracking-wider">分享</span>
+  
+  <!-- 复制链接 -->
+  <button 
+    id="copy-link-btn"
+    class="w-9 h-9 rounded-full border border-anemoi-accent/20 flex items-center justify-center text-anemoi-muted hover:text-anemoi-text hover:border-anemoi-accent/50 transition-all duration-300"
+    title="复制链接"
+    aria-label="复制链接"
+  >
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+    </svg>
+  </button>
+  
+  <!-- Twitter/X -->
+  <a 
+    href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="w-9 h-9 rounded-full border border-anemoi-accent/20 flex items-center justify-center text-anemoi-muted hover:text-anemoi-text hover:border-anemoi-accent/50 transition-all duration-300"
+    title="分享到 X"
+    aria-label="分享到 X"
+  >
+    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+    </svg>
+  </a>
+  
+  <!-- 提示消息 -->
+  <span 
+    id="copy-toast" 
+    class="hidden text-xs text-anemoi-accent tracking-wider"
+  >
+    链接已复制
+  </span>
+</div>
+
+<script>
+  (function() {
+    const copyBtn = document.getElementById('copy-link-btn');
+    const toast = document.getElementById('copy-toast');
+    
+    copyBtn?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        toast?.classList.remove('hidden');
+        setTimeout(() => {
+          toast?.classList.add('hidden');
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy:', err);
+      }
+    });
+  })();
+</script>

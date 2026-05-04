@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import ScrollReveal from '../../components/ScrollReveal.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const tagSet = new Set<string>();
+  posts.forEach((post) => {
+    post.data.tags?.forEach((tag) => tagSet.add(tag));
+  });
+  
+  return Array.from(tagSet).map((tag) => ({
+    params: { tag },
+    props: { 
+      tag,
+      posts: posts.filter((post) => post.data.tags?.includes(tag))
+        .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
+    },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<BaseLayout title={`标签：${tag} - anemoi-blog`} description={`浏览标签「${tag}」下的文章`}>
+  <!-- 页面头部 -->
+  <section class="pt-32 pb-16 px-6 text-center">
+    <ScrollReveal>
+      <span class="text-xs text-anemoi-muted tracking-[0.3em] block mb-4">TAG</span>
+      <h1 class="text-4xl md:text-6xl font-display text-anemoi-deep tracking-wider mb-4">
+        {tag}
+      </h1>
+      <p class="text-anemoi-muted text-sm tracking-wider">
+        共 {posts.length} 篇文章
+      </p>
+    </ScrollReveal>
+  </section>
+  
+  <!-- 文章列表 -->
+  <section class="px-6 py-8 pb-24">
+    <div class="max-w-6xl mx-auto">
+      {posts.length > 0 ? (
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+          {posts.map((post, index) => (
+            <ScrollReveal delay={index * 0.1}>
+              <PostCard 
+                title={post.data.title}
+                date={post.data.date}
+                slug={post.slug}
+                coverImage={post.data.coverImage || '/images/cover-1.jpg'}
+                description={post.data.description}
+              />
+            </ScrollReveal>
+          ))}
+        </div>
+      ) : (
+        <p class="text-center text-anemoi-muted py-16">该标签下暂无文章</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>

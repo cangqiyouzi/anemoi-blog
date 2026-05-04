@@ -1,17 +1,31 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import PostNavigation from '../../components/PostNavigation.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import ScrollReveal from '../../components/ScrollReveal.astro';
+import { calculateReadingTime } from '../../utils/readingTime';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
   return posts.map((post) => ({
     params: { slug: post.slug },
-    props: { post },
+    props: { post, allPosts: posts },
   }));
 }
 
-const { post } = Astro.props;
-const { Content } = await post.render();
+const { post, allPosts } = Astro.props;
+const { Content, headings } = await post.render();
+
+// 计算阅读时间
+const readTime = calculateReadingTime(post.body || '');
+
+// 获取上一篇/下一篇
+const sortedPosts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const currentIndex = sortedPosts.findIndex((p) => p.slug === post.slug);
+const prevPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
+const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
 
 const formattedDate = post.data.date.toLocaleDateString('zh-CN', {
   year: 'numeric',
@@ -21,53 +35,100 @@ const formattedDate = post.data.date.toLocaleDateString('zh-CN', {
 ---
 
 <BaseLayout title={`${post.data.title} - anemoi-blog`} description={post.data.description}>
+  <TableOfContents headings={headings} />
+  
   <article class="min-h-screen">
     <!-- 文章头部 -->
-    <header class="relative w-full h-[50vh] min-h-[400px] flex items-end justify-center overflow-hidden">
+    <header class="relative w-full h-[60vh] min-h-[450px] flex items-end justify-center overflow-hidden">
       <div 
-        class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        class="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
         style={`background-image: url('${post.data.coverImage || '/images/cover-1.jpg'}');`}
+        data-parallax-speed="0.2"
       >
-        <div class="absolute inset-0 bg-gradient-to-t from-anemoi-bg via-anemoi-bg/40 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-anemoi-bg via-anemoi-bg/50 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-anemoi-lavender/5 via-transparent to-anemoi-sky/5"></div>
       </div>
       
-      <div class="relative z-10 text-center px-6 pb-12 max-w-4xl mx-auto">
-        <time class="block text-sm text-anemoi-muted tracking-wider mb-4">
-          {formattedDate}
-        </time>
-        <h1 class="text-3xl md:text-5xl lg:text-6xl font-serif text-anemoi-text leading-tight">
-          {post.data.title}
-        </h1>
-        {post.data.tags.length > 0 && (
-          <div class="flex flex-wrap justify-center gap-2 mt-6">
-            {post.data.tags.map((tag) => (
-              <span class="text-xs px-3 py-1 border border-anemoi-accent/40 text-anemoi-muted rounded-full tracking-wider">
-                {tag}
-              </span>
-            ))}
+      <div class="relative z-10 text-center px-6 pb-16 max-w-4xl mx-auto">
+        <ScrollReveal>
+          <time class="block text-sm text-anemoi-muted tracking-wider mb-3">
+            {formattedDate}
+          </time>
+          <div class="flex items-center justify-center gap-3 mb-6">
+            <span class="w-8 h-px bg-anemoi-accent/30"></span>
+            <span class="text-xs text-anemoi-muted tracking-wider">{readTime} 分钟阅读</span>
+            <span class="w-8 h-px bg-anemoi-accent/30"></span>
           </div>
-        )}
+          <h1 class="text-3xl md:text-5xl lg:text-6xl font-display text-anemoi-deep leading-tight">
+            {post.data.title}
+          </h1>
+          {post.data.tags.length > 0 && (
+            <div class="flex flex-wrap justify-center gap-2 mt-8">
+              {post.data.tags.map((tag) => (
+                <a 
+                  href={`/tags/${encodeURIComponent(tag)}/`}
+                  class="text-xs px-3 py-1 border border-anemoi-accent/30 text-anemoi-muted hover:text-anemoi-text hover:border-anemoi-accent/60 rounded-full tracking-wider transition-all duration-300"
+                >
+                  {tag}
+                </a>
+              ))}
+            </div>
+          )}
+        </ScrollReveal>
       </div>
     </header>
     
     <!-- 文章内容 -->
     <div class="max-w-3xl mx-auto px-6 py-16 md:py-24">
-      <div class="prose prose-lg max-w-none prose-headings:font-serif prose-headings:font-normal prose-p:leading-loose prose-p:text-anemoi-text/90 prose-a:text-anemoi-accent hover:prose-a:text-anemoi-text prose-img:rounded-sm prose-hr:border-anemoi-accent/30">
-        <Content />
-      </div>
+      <ScrollReveal>
+        <div class="prose prose-lg max-w-none prose-headings:font-display prose-headings:font-normal prose-p:leading-loose prose-p:text-anemoi-text/90 prose-a:text-anemoi-accent hover:prose-a:text-anemoi-text prose-img:rounded-sm prose-hr:border-anemoi-accent/30 prose-blockquote:border-anemoi-accent/30 prose-blockquote:bg-anemoi-warm/30 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:not-italic">
+          <Content />
+        </div>
+      </ScrollReveal>
       
-      <!-- 返回按钮 -->
-      <div class="mt-16 pt-8 border-t border-anemoi-accent/20 text-center">
-        <a 
-          href="/" 
-          class="inline-flex items-center gap-2 text-anemoi-muted hover:text-anemoi-accent transition-colors tracking-wider text-sm"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-          </svg>
-          返回首页
-        </a>
-      </div>
+      <!-- 分享 -->
+      <ScrollReveal>
+        <ShareButtons title={post.data.title} />
+      </ScrollReveal>
+      
+      <!-- 标签 -->
+      {post.data.tags.length > 0 && (
+        <ScrollReveal>
+          <div class="flex flex-wrap gap-2 mt-8 pt-8 border-t border-anemoi-accent/10">
+            {post.data.tags.map((tag) => (
+              <a 
+                href={`/tags/${encodeURIComponent(tag)}/`}
+                class="text-sm px-4 py-2 bg-anemoi-warm/50 text-anemoi-muted hover:text-anemoi-text hover:bg-anemoi-warm transition-all duration-300 rounded-sm tracking-wider"
+              >
+                {tag}
+              </a>
+            ))}
+          </div>
+        </ScrollReveal>
+      )}
+      
+      <!-- 上下篇导航 -->
+      <PostNavigation 
+        prev={prevPost ? { slug: prevPost.slug, title: prevPost.data.title, coverImage: prevPost.data.coverImage } : null}
+        next={nextPost ? { slug: nextPost.slug, title: nextPost.data.title, coverImage: nextPost.data.coverImage } : null}
+      />
     </div>
   </article>
 </BaseLayout>
+
+<script>
+  // 文章页视差效果
+  (function() {
+    const parallaxElements = document.querySelectorAll('[data-parallax-speed]');
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      parallaxElements.forEach((el) => {
+        const speed = parseFloat(el.getAttribute('data-parallax-speed') || '0');
+        const yPos = scrollY * speed;
+        (el as HTMLElement).style.transform = `translateY(${yPos}px)`;
+      });
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+  })();
+</script>

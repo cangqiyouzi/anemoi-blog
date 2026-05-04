@@ -1,0 +1,81 @@
+---
+export interface Props {
+  headings: Array<{
+    depth: number;
+    slug: string;
+    text: string;
+  }>;
+}
+
+const { headings } = Astro.props;
+const tocHeadings = headings.filter((h) => h.depth <= 3);
+---
+
+{tocHeadings.length > 2 && (
+  <aside class="hidden lg:block fixed right-8 top-32 w-56 z-30">
+    <div class="bg-anemoi-ivory/80 backdrop-blur-sm rounded-sm p-5 border border-anemoi-accent/10">
+      <h4 class="text-xs font-sans tracking-[0.2em] text-anemoi-muted mb-4 uppercase">
+        目录
+      </h4>
+      <nav class="space-y-2">
+        {tocHeadings.map((heading) => (
+          <a
+            href={`#${heading.slug}`}
+            class={`block text-sm transition-colors duration-200 hover:text-anemoi-accent ${
+              heading.depth === 2 
+                ? 'text-anemoi-text' 
+                : 'text-anemoi-muted pl-3'
+            }`}
+          >
+            {heading.text}
+          </a>
+        ))}
+      </nav>
+    </div>
+  </aside>
+)}
+
+<!-- 移动端 TOC 折叠按钮 -->
+{tocHeadings.length > 2 && (
+  <div class="lg:hidden mb-8">
+    <button 
+      id="mobile-toc-toggle"
+      class="w-full flex items-center justify-between px-4 py-3 bg-anemoi-warm/50 text-anemoi-text text-sm tracking-wider"
+    >
+      <span>文章目录</span>
+      <svg id="toc-arrow" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7" />
+      </svg>
+    </button>
+    <nav 
+      id="mobile-toc"
+      class="hidden bg-anemoi-ivory/80 border border-t-0 border-anemoi-accent/10 px-4 py-3 space-y-2"
+    >
+      {tocHeadings.map((heading) => (
+        <a
+          href={`#${heading.slug}`}
+          class={`block text-sm transition-colors duration-200 hover:text-anemoi-accent ${
+            heading.depth === 2 
+              ? 'text-anemoi-text' 
+              : 'text-anemoi-muted pl-3'
+          }`}
+        >
+          {heading.text}
+        </a>
+      ))}
+    </nav>
+  </div>
+)}
+
+<script>
+  (function() {
+    const toggle = document.getElementById('mobile-toc-toggle');
+    const toc = document.getElementById('mobile-toc');
+    const arrow = document.getElementById('toc-arrow');
+    
+    toggle?.addEventListener('click', () => {
+      toc?.classList.toggle('hidden');
+      arrow?.classList.toggle('rotate-180');
+    });
+  })();
+</script>

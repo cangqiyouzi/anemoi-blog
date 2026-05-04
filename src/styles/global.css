@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -9,6 +9,24 @@
   --color-text: #4a4a4a;
   --color-muted: #8a8a8a;
   --color-accent: #a8c4d9;
+  --color-deep: #3d4f5f;
+  --color-lavender: #c5b9d4;
+  --color-warm: #f5f0e8;
+  --color-ivory: #fffdf9;
+  --color-sky: #d4e3ed;
+}
+
+/* 深色模式颜色 */
+.dark {
+  --color-bg: #1e2430;
+  --color-text: #d4d8e0;
+  --color-muted: #8a90a0;
+  --color-accent: #7a9ab0;
+  --color-deep: #a8b8c8;
+  --color-lavender: #8a80a0;
+  --color-warm: #2a3040;
+  --color-ivory: #2a3040;
+  --color-sky: #3a5060;
 }
 
 html {
@@ -21,11 +39,17 @@ body {
   color: var(--color-text);
   line-height: 1.8;
   letter-spacing: 0.02em;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* 英文显示字体 */
+.font-display {
+  font-family: 'Cormorant Garamond', 'Noto Serif JP', serif;
 }
 
 /* 衬线体标题 */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Noto Serif JP', 'Source Han Serif SC', 'SimSun', serif;
+  font-family: 'Cormorant Garamond', 'Noto Serif JP', 'Source Han Serif SC', 'SimSun', serif;
   font-weight: 400;
   letter-spacing: 0.04em;
 }
@@ -60,4 +84,144 @@ a:hover {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #b4b4b4;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #4a5060;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #5a6070;
+}
+
+/* ScrollReveal 基础类 */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 错开动画延迟工具类 */
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-5 { transition-delay: 0.5s; }
+
+/* 标题逐字动画 */
+.char-reveal .char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: charFadeIn 0.6s ease-out forwards;
+}
+
+@keyframes charFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 花瓣动画容器 */
+.petal {
+  position: fixed;
+  top: -20px;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0;
+}
+
+/* 页面过渡优化 */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.5s;
+}
+
+/* 选中文字颜色 */
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-ivory);
+}
+
+/* 深色模式下的图片亮度调整，避免过亮 */
+.dark img {
+  filter: brightness(0.92);
+}
+
+.dark .prose img {
+  filter: brightness(0.9);
+}
+
+/* 深色模式下 prose 文章样式覆盖 */
+.dark .prose {
+  color: var(--color-text);
+}
+
+.dark .prose p,
+.dark .prose ul,
+.dark .prose ol,
+.dark .prose li {
+  color: var(--color-text);
+}
+
+.dark .prose h1,
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4,
+.dark .prose h5,
+.dark .prose h6 {
+  color: var(--color-deep);
+}
+
+.dark .prose strong,
+.dark .prose b {
+  color: var(--color-text);
+}
+
+.dark .prose a {
+  color: var(--color-accent);
+}
+
+.dark .prose a:hover {
+  color: var(--color-text);
+}
+
+.dark .prose blockquote {
+  color: var(--color-muted);
+  border-left-color: var(--color-accent);
+  background-color: var(--color-warm);
+}
+
+.dark .prose code {
+  color: var(--color-accent);
+  background-color: var(--color-warm);
+}
+
+.dark .prose pre {
+  background-color: var(--color-warm);
+  color: var(--color-text);
+}
+
+.dark .prose hr {
+  border-color: var(--color-accent);
+}
+
+.dark .prose figcaption {
+  color: var(--color-muted);
+}
+
+.dark .prose th,
+.dark .prose td {
+  color: var(--color-text);
+  border-color: var(--color-accent);
+}
+
+.dark .prose thead {
+  border-bottom-color: var(--color-accent);
 }

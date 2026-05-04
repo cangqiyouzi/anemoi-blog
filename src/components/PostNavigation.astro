@@ -1,0 +1,70 @@
+---
+export interface Props {
+  prev?: {
+    slug: string;
+    title: string;
+    coverImage?: string;
+  } | null;
+  next?: {
+    slug: string;
+    title: string;
+    coverImage?: string;
+  } | null;
+}
+
+const { prev, next } = Astro.props;
+---
+
+{(prev || next) && (
+  <nav class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 pt-8 border-t border-anemoi-accent/20">
+    <!-- 上一篇 -->
+    {prev ? (
+      <a 
+        href={`/blog/${prev.slug}/`}
+        class="group block p-4 rounded-sm hover:bg-anemoi-warm/30 transition-colors duration-300"
+      >
+        <span class="text-xs text-anemoi-muted tracking-wider block mb-2">上一篇</span>
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 rounded-sm overflow-hidden flex-shrink-0">
+            <img 
+              src={prev.coverImage || '/images/cover-1.jpg'} 
+              alt=""
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              loading="lazy"
+            />
+          </div>
+          <h4 class="text-sm font-display text-anemoi-text group-hover:text-anemoi-accent transition-colors leading-snug line-clamp-2">
+            {prev.title}
+          </h4>
+        </div>
+      </a>
+    ) : (
+      <div></div>
+    )}
+    
+    <!-- 下一篇 -->
+    {next ? (
+      <a 
+        href={`/blog/${next.slug}/`}
+        class="group block p-4 rounded-sm hover:bg-anemoi-warm/30 transition-colors duration-300 text-right md:text-right"
+      >
+        <span class="text-xs text-anemoi-muted tracking-wider block mb-2">下一篇</span>
+        <div class="flex items-center gap-4 flex-row-reverse">
+          <div class="w-16 h-16 rounded-sm overflow-hidden flex-shrink-0">
+            <img 
+              src={next.coverImage || '/images/cover-1.jpg'} 
+              alt=""
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              loading="lazy"
+            />
+          </div>
+          <h4 class="text-sm font-display text-anemoi-text group-hover:text-anemoi-accent transition-colors leading-snug line-clamp-2">
+            {next.title}
+          </h4>
+        </div>
+      </a>
+    ) : (
+      <div></div>
+    )}
+  </nav>
+)}

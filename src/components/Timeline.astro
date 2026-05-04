@@ -1,0 +1,48 @@
+---
+import ScrollReveal from './ScrollReveal.astro';
+
+export interface Props {
+  events: Array<{
+    date: string;
+    title: string;
+    description: string;
+  }>;
+}
+
+const { events } = Astro.props;
+---
+
+<div class="relative">
+  <!-- 时间线 -->
+  <div class="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-anemoi-accent/20 md:-translate-x-1/2"></div>
+  
+  <div class="space-y-12">
+    {events.map((event, index) => {
+      const isEven = index % 2 === 0;
+      return (
+        <div class={`relative md:flex items-start ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+          <!-- 节点 -->
+          <div class="absolute left-4 md:left-1/2 w-2 h-2 rounded-full bg-anemoi-accent/60 border-2 border-anemoi-bg md:-translate-x-1/2 mt-2"></div>
+          
+          <!-- 内容 -->
+          <div class={`ml-10 md:ml-0 md:w-1/2 ${isEven ? 'md:pr-12 md:text-right' : 'md:pl-12 md:text-left'}`}>
+            <ScrollReveal delay={index * 0.1}>
+              <time class="text-xs text-anemoi-lavender font-display tracking-wider block mb-1">
+                {event.date}
+              </time>
+              <h3 class="text-lg font-display text-anemoi-text mb-2">
+                {event.title}
+              </h3>
+              <p class="text-sm text-anemoi-muted leading-relaxed font-light">
+                {event.description}
+              </p>
+            </ScrollReveal>
+          </div>
+          
+          <!-- 另一侧留白 -->
+          <div class="hidden md:block md:w-1/2"></div>
+        </div>
+      );
+    })}
+  </div>
+</div>

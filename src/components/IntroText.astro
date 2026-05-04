@@ -2,6 +2,7 @@
 export interface Props {
   lines?: string[];
   align?: 'center' | 'left' | 'right';
+  class?: string;
 }
 
 const { 
@@ -10,7 +11,8 @@ const {
     '带来了未知的故事',
     '和未曾说出口的问候',
   ],
-  align = 'center'
+  align = 'center',
+  class: className = ''
 } = Astro.props;
 
 const alignClass = {
@@ -20,12 +22,12 @@ const alignClass = {
 }[align];
 ---
 
-<section class={`py-24 md:py-32 px-6 ${alignClass}`}>
+<section class={`py-24 md:py-32 px-6 ${alignClass} ${className}`}>
   <div class="max-w-3xl mx-auto space-y-6">
     {lines.map((line, index) => (
       <p 
-        class="text-lg md:text-xl lg:text-2xl font-light text-anemoi-text/80 leading-loose tracking-wide"
-        style={`animation-delay: ${index * 0.2}s`}
+        class="reveal text-lg md:text-xl lg:text-2xl font-light text-anemoi-text/80 leading-loose tracking-wide"
+        style={`transition-delay: ${index * 0.2}s;`}
       >
         {line}
       </p>

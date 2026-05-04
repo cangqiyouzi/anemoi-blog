@@ -1,0 +1,127 @@
+---
+import ScrollReveal from './ScrollReveal.astro';
+
+export interface Props {
+  posts: Array<{
+    slug: string;
+    data: {
+      title: string;
+      date: Date;
+      description: string;
+      coverImage?: string;
+      tags?: string[];
+    };
+  }>;
+}
+
+const { posts } = Astro.props;
+
+function formatDate(date: Date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return { y, m, d, full: `${y}.${m}.${d}` };
+}
+---
+
+<section class="px-6 py-16 md:py-24">
+  <div class="max-w-5xl mx-auto">
+    <!-- 区块标题 -->
+    <ScrollReveal>
+      <h2 class="text-3xl md:text-4xl font-display text-center mb-4 tracking-[0.15em] text-anemoi-deep">
+        NEWS
+      </h2>
+      <p class="text-center text-anemoi-muted text-sm tracking-wider mb-16 font-light">
+        记录风的轨迹
+      </p>
+    </ScrollReveal>
+    
+    <!-- 时间�?-->
+    <div class="relative">
+      <!-- 中线（桌面端�?-->
+      <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-anemoi-accent/20 -translate-x-1/2"></div>
+      
+      {posts.map((post, index) => {
+        const date = formatDate(post.data.date);
+        const isEven = index % 2 === 0;
+        const cover = post.data.coverImage || '/images/cover-1.jpg';
+        
+        return (
+          <div class={`relative md:flex items-center mb-16 last:mb-0 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
+            <!-- 日期节点（桌面端居中�?-->
+            <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 z-10">
+              <div class="w-3 h-3 rounded-full bg-anemoi-accent/60 border-2 border-anemoi-bg"></div>
+            </div>
+            
+            <!-- 内容区域 -->
+            <div class={`md:w-1/2 ${isEven ? 'md:pr-16 md:text-right' : 'md:pl-16 md:text-left'}`}>
+              <ScrollReveal delay={index * 0.1}>
+                <a href={`/blog/${post.slug}/`} class="group block">
+                  <!-- 日期 -->
+                  <div class={`flex items-center gap-3 mb-3 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
+                    <span class="text-xs text-anemoi-lavender font-display tracking-wider">
+                      {date.y}
+                    </span>
+                    <span class="text-sm text-anemoi-muted tracking-wider font-light">
+                      {date.m}.{date.d}
+                    </span>
+                  </div>
+                  
+                  <!-- 图片 -->
+                  <div class="relative overflow-hidden rounded-sm aspect-[16/10] mb-4">
+                    <img 
+                      src={cover} 
+                      alt={post.data.title}
+                      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                    <div class="absolute inset-0 bg-anemoi-deep/0 group-hover:bg-anemoi-deep/10 transition-colors duration-500"></div>
+                  </div>
+                  
+                  <!-- 标题 -->
+                  <h3 class="text-xl md:text-2xl font-display text-anemoi-text group-hover:text-anemoi-accent transition-colors duration-300 leading-snug mb-2">
+                    {post.data.title}
+                  </h3>
+                  
+                  <!-- 描述 -->
+                  <p class="text-sm text-anemoi-muted line-clamp-2 leading-relaxed font-light">
+                    {post.data.description}
+                  </p>
+                  
+                  <!-- 标签 -->
+                  {post.data.tags && post.data.tags.length > 0 && (
+                    <div class={`flex flex-wrap gap-2 mt-3 ${isEven ? 'md:justify-end' : 'md:justify-start'}`}>
+                      {post.data.tags.map((tag) => (
+                        <span class="text-xs px-2 py-0.5 bg-anemoi-warm text-anemoi-muted rounded-sm tracking-wider">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </a>
+              </ScrollReveal>
+            </div>
+            
+            <!-- 另一侧留�?-->
+            <div class="hidden md:block md:w-1/2"></div>
+          </div>
+        );
+      })}
+    </div>
+    
+    <!-- 查看更多 -->
+    <div class="text-center mt-16">
+      <a 
+        href="/archive/" 
+        class="inline-flex items-center gap-2 px-6 py-3 border border-anemoi-accent/30 text-anemoi-muted hover:text-anemoi-text hover:border-anemoi-accent/60 transition-all duration-300 text-sm tracking-wider"
+      >
+        查看全部文章
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+
