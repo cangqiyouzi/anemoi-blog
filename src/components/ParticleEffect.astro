@@ -1,0 +1,82 @@
+---
+// 极轻量粒子动效 - 可关闭
+---
+
+<div id="particle-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden" aria-hidden="true">
+  <!-- 粒子由 JS 生成 -->
+</div>
+
+<script>
+  (function() {
+    // 检测用户是否偏好减少动画
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const container = document.getElementById('particle-container');
+    if (!container) return;
+
+    const PARTICLE_COUNT = 15;
+    const particles: HTMLDivElement[] = [];
+
+    function createParticle() {
+      const particle = document.createElement('div');
+      const size = Math.random() * 4 + 2;
+      const left = Math.random() * 100;
+      const duration = Math.random() * 15 + 10;
+      const delay = Math.random() * 10;
+
+      particle.style.cssText = `
+        position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        left: ${left}%;
+        top: -10px;
+        background: radial-gradient(circle, rgba(168, 196, 217, 0.4) 0%, transparent 70%);
+        border-radius: 50%;
+        opacity: 0;
+        animation: particleFall ${duration}s linear ${delay}s infinite;
+        pointer-events: none;
+      `;
+
+      return particle;
+    }
+
+    // 添加关键帧动画
+    if (!document.getElementById('particle-styles')) {
+      const style = document.createElement('style');
+      style.id = 'particle-styles';
+      style.textContent = `
+        @keyframes particleFall {
+          0% {
+            opacity: 0;
+            transform: translateY(0) translateX(0);
+          }
+          10% {
+            opacity: 0.6;
+          }
+          90% {
+            opacity: 0.6;
+          }
+          100% {
+            opacity: 0;
+            transform: translateY(100vh) translateX(${Math.random() * 50 - 25}px);
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      const particle = createParticle();
+      particles.push(particle);
+      container.appendChild(particle);
+    }
+
+    // 页面不可见时暂停动画（性能优化）
+    document.addEventListener('visibilitychange', () => {
+      particles.forEach(p => {
+        p.style.animationPlayState = document.hidden ? 'paused' : 'running';
+      });
+    });
+  })();
+</script>

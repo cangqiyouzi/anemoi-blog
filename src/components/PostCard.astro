@@ -1,0 +1,47 @@
+---
+export interface Props {
+  title: string;
+  date: Date;
+  slug: string;
+  coverImage?: string;
+  description?: string;
+}
+
+const { title, date, slug, coverImage = '/images/cover-1.jpg', description } = Astro.props;
+
+const formattedDate = date.toLocaleDateString('zh-CN', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+}).replace(/\//g, '.');
+---
+
+<article class="group cursor-pointer">
+  <a href={`/blog/${slug}/`} class="block">
+    <!-- 图片容器 -->
+    <div class="relative overflow-hidden rounded-sm mb-4 aspect-[16/10]">
+      <img 
+        src={coverImage} 
+        alt={title}
+        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        loading="lazy"
+      />
+      <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500"></div>
+    </div>
+    
+    <!-- 文字信息 -->
+    <div class="space-y-2">
+      <time class="block text-sm text-anemoi-muted tracking-wider font-light">
+        {formattedDate}
+      </time>
+      <h3 class="text-xl md:text-2xl font-serif text-anemoi-text group-hover:text-anemoi-accent transition-colors duration-300 line-clamp-2">
+        {title}
+      </h3>
+      {description && (
+        <p class="text-sm text-anemoi-muted line-clamp-2 leading-relaxed">
+          {description}
+        </p>
+      )}
+    </div>
+  </a>
+</article>

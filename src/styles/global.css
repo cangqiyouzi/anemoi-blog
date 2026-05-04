@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg: #faf9f7;
+  --color-text: #4a4a4a;
+  --color-muted: #8a8a8a;
+  --color-accent: #a8c4d9;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+}
+
+/* 衬线体标题 */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Noto Serif JP', 'Source Han Serif SC', 'SimSun', serif;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* 宽松行高营造诗句感 */
+p {
+  line-height: 2;
+}
+
+/* 链接样式 */
+a {
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--color-accent);
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4d4d4;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b4b4b4;
+}

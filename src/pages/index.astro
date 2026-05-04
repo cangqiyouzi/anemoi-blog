@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import IntroText from '../components/IntroText.astro';
+import PostCard from '../components/PostCard.astro';
+import ParticleEffect from '../components/ParticleEffect.astro';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<BaseLayout title="anemoi-blog" description="风之所向，心之所往 - 个人博客">
+  <ParticleEffect />
+  
+  <!-- Hero 区域 -->
+  <Hero 
+    title="anemoi-blog"
+    subtitle="风之所向，心之所往"
+    backgroundImage="/images/hero-bg.jpg"
+  />
+  
+  <!-- 叙事感引言 -->
+  <IntroText 
+    lines={[
+      '风，从很远的地方吹来',
+      '带来了未知的故事',
+      '和未曾说出口的问候',
+    ]}
+  />
+  
+  <!-- 文章列表 -->
+  <section class="px-6 py-16 md:py-24">
+    <div class="max-w-6xl mx-auto">
+      <h2 class="text-3xl md:text-4xl font-serif text-center mb-16 tracking-widest text-anemoi-text">
+        NEWS
+      </h2>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        {posts.map((post) => (
+          <PostCard 
+            title={post.data.title}
+            date={post.data.date}
+            slug={post.slug}
+            coverImage={post.data.coverImage || '/images/cover-1.jpg'}
+            description={post.data.description}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- 底部引言 -->
+  <IntroText 
+    lines={[
+      '每一个故事，都是一阵风',
+      '吹过就散了',
+      '却留下了痕迹',
+    ]}
+  />
+</BaseLayout>

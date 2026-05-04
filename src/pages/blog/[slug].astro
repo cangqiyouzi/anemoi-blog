@@ -1,0 +1,73 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+
+const formattedDate = post.data.date.toLocaleDateString('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+
+<BaseLayout title={`${post.data.title} - anemoi-blog`} description={post.data.description}>
+  <article class="min-h-screen">
+    <!-- 文章头部 -->
+    <header class="relative w-full h-[50vh] min-h-[400px] flex items-end justify-center overflow-hidden">
+      <div 
+        class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={`background-image: url('${post.data.coverImage || '/images/cover-1.jpg'}');`}
+      >
+        <div class="absolute inset-0 bg-gradient-to-t from-anemoi-bg via-anemoi-bg/40 to-transparent"></div>
+      </div>
+      
+      <div class="relative z-10 text-center px-6 pb-12 max-w-4xl mx-auto">
+        <time class="block text-sm text-anemoi-muted tracking-wider mb-4">
+          {formattedDate}
+        </time>
+        <h1 class="text-3xl md:text-5xl lg:text-6xl font-serif text-anemoi-text leading-tight">
+          {post.data.title}
+        </h1>
+        {post.data.tags.length > 0 && (
+          <div class="flex flex-wrap justify-center gap-2 mt-6">
+            {post.data.tags.map((tag) => (
+              <span class="text-xs px-3 py-1 border border-anemoi-accent/40 text-anemoi-muted rounded-full tracking-wider">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </header>
+    
+    <!-- 文章内容 -->
+    <div class="max-w-3xl mx-auto px-6 py-16 md:py-24">
+      <div class="prose prose-lg max-w-none prose-headings:font-serif prose-headings:font-normal prose-p:leading-loose prose-p:text-anemoi-text/90 prose-a:text-anemoi-accent hover:prose-a:text-anemoi-text prose-img:rounded-sm prose-hr:border-anemoi-accent/30">
+        <Content />
+      </div>
+      
+      <!-- 返回按钮 -->
+      <div class="mt-16 pt-8 border-t border-anemoi-accent/20 text-center">
+        <a 
+          href="/" 
+          class="inline-flex items-center gap-2 text-anemoi-muted hover:text-anemoi-accent transition-colors tracking-wider text-sm"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          返回首页
+        </a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

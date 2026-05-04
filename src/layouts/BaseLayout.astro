@@ -1,0 +1,53 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'anemoi-blog - 个人博客' } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <title>{title}</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style is:global>
+    @import '../styles/global.css';
+  </style>
+</head>
+<body class="min-h-screen bg-anemoi-bg text-anemoi-text antialiased">
+  <!-- 极简顶部导航 -->
+  <nav class="fixed top-0 left-0 right-0 z-40 px-6 py-5 transition-colors duration-500 hover:bg-anemoi-bg/80">
+    <div class="max-w-6xl mx-auto flex items-center justify-between">
+      <a href="/" class="text-lg font-serif tracking-widest text-anemoi-text hover:text-anemoi-accent transition-colors">
+        anemoi
+      </a>
+      <div class="flex items-center gap-8 text-sm tracking-wider">
+        <a 
+          href="/" 
+          class={`transition-colors duration-300 ${currentPath === '/' ? 'text-anemoi-text' : 'text-anemoi-muted hover:text-anemoi-text'}`}
+        >
+          首页
+        </a>
+        <a 
+          href="/about/" 
+          class={`transition-colors duration-300 ${currentPath === '/about/' ? 'text-anemoi-text' : 'text-anemoi-muted hover:text-anemoi-text'}`}
+        >
+          关于
+        </a>
+      </div>
+    </div>
+  </nav>
+  
+  <slot />
+  
+  <footer class="py-12 text-center text-anemoi-muted text-sm tracking-widest">
+    <p> anemoi-blog. All rights reserved.</p>
+  </footer>
+</body>
+</html>

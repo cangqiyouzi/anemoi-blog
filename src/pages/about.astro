@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import IntroText from '../components/IntroText.astro';
+---
+
+<BaseLayout title="关于 - anemoi-blog" description="关于 anemoi-blog">
+  <!-- 页面头部 -->
+  <section class="relative w-full h-[40vh] min-h-[300px] flex items-center justify-center overflow-hidden">
+    <div 
+      class="absolute inset-0 bg-cover bg-center bg-no-repeat"
+      style="background-image: url('/images/about-bg.jpg');"
+    >
+      <div class="absolute inset-0 bg-white/40"></div>
+    </div>
+    
+    <div class="relative z-10 text-center px-6">
+      <h1 class="text-4xl md:text-6xl font-serif text-anemoi-text tracking-wider">
+        ABOUT
+      </h1>
+    </div>
+  </section>
+  
+  <!-- 关于内容 -->
+  <section class="max-w-3xl mx-auto px-6 py-16 md:py-24">
+    <div class="space-y-12">
+      <div class="text-center space-y-6">
+        <h2 class="text-2xl md:text-3xl font-serif text-anemoi-text">
+          关于这个博客
+        </h2>
+        <p class="text-anemoi-text/80 leading-loose">
+          anemoi-blog 是一个以风为名的个人博客，视觉灵感来源于 Key/Visual Arts 旗下作品的经典气质。
+          这里记录着我的思考、故事与旅程，如同一阵风吹过，留下淡淡的痕迹。
+        </p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 py-8">
+        <div class="text-center md:text-left space-y-4">
+          <h3 class="text-xl font-serif text-anemoi-text">写作</h3>
+          <p class="text-sm text-anemoi-muted leading-relaxed">
+            用文字记录生活中的瞬间与感悟，追求简洁而有力的表达。
+          </p>
+        </div>
+        <div class="text-center md:text-left space-y-4">
+          <h3 class="text-xl font-serif text-anemoi-text">设计</h3>
+          <p class="text-sm text-anemoi-muted leading-relaxed">
+            相信留白的力量，追求优雅与克制的视觉呈现。
+          </p>
+        </div>
+      </div>
+      
+      <div class="text-center pt-8 border-t border-anemoi-accent/20">
+        <p class="text-anemoi-muted text-sm">
+          联系方式：contact@example.com
+        </p>
+      </div>
+    </div>
+  </section>
+  
+  <IntroText 
+    lines={[
+      '感谢你的到访',
+      '愿风常伴你左右',
+    ]}
+  />
+</BaseLayout>
