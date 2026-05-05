@@ -39,8 +39,7 @@ const milestones = [
     class="relative w-full h-[50vh] min-h-[350px] flex items-center justify-center overflow-hidden"
   >
     <div
-      class="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
-      style="background-image: url('/images/imgi_28_story_bg.jpg');"
+      class="about-hero-bg absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
       data-parallax-speed="0.2"
     >
       <div
@@ -177,3 +176,12 @@ const milestones = [
     handleScroll();
   })();
 </script>
+
+<style define:vars={{ lightBg: "url('/images/imgi_28_story_bg.jpg')", darkBg: "url('/images/imgi_28_dark_bg.jpg')" }}>
+  .about-hero-bg {
+    background-image: var(--lightBg);
+  }
+  :global(.dark) .about-hero-bg {
+    background-image: var(--darkBg);
+  }
+</style>
