@@ -5,90 +5,114 @@ export interface Props {
   backgroundImage?: string;
 }
 
-const { 
-  title = 'anemoi-blog', 
-  subtitle = '风之所向，心之所往',
-  backgroundImage = '/images/hero-bg.jpg' 
+const {
+  title = "anemoi-blog",
+  subtitle = "风之所向，心之所往",
+  backgroundImage = "/images/imgi_32_character_bg.jpg",
 } = Astro.props;
 
 // 将标题拆分为字符数组，用于逐字动画
-const titleChars = title.split('');
+const titleChars = title.split("");
 ---
 
-<section class="relative w-full h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
+<section
+  class="relative w-full h-screen min-h-[600px] flex items-center justify-center overflow-hidden"
+>
   <!-- 视差背景层 -->
-  <div 
+  <div
     class="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
     style={`background-image: url('${backgroundImage}');`}
     data-parallax-speed="0.3"
   >
     <!-- 多层柔和遮罩 -->
-    <div class="absolute inset-0 bg-gradient-to-b from-anemoi-warm/30 via-transparent to-anemoi-bg/90"></div>
-    <div class="absolute inset-0 bg-gradient-to-r from-anemoi-lavender/10 via-transparent to-anemoi-sky/10"></div>
+    <div
+      class="absolute inset-0 bg-gradient-to-b from-anemoi-warm/30 via-transparent to-anemoi-bg/90"
+    >
+    </div>
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-anemoi-lavender/10 via-transparent to-anemoi-sky/10"
+    >
+    </div>
   </div>
-  
+
   <!-- 装饰性淡色层（中间视差层） -->
-  <div 
-    class="absolute inset-0 pointer-events-none"
-    data-parallax-speed="0.15"
-  >
-    <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-anemoi-accent/5 rounded-full blur-3xl"></div>
-    <div class="absolute bottom-1/3 right-1/4 w-48 h-48 bg-anemoi-lavender/5 rounded-full blur-3xl"></div>
+  <div class="absolute inset-0 pointer-events-none" data-parallax-speed="0.15">
+    <div
+      class="absolute top-1/4 left-1/4 w-64 h-64 bg-anemoi-accent/5 rounded-full blur-3xl"
+    >
+    </div>
+    <div
+      class="absolute bottom-1/3 right-1/4 w-48 h-48 bg-anemoi-lavender/5 rounded-full blur-3xl"
+    >
+    </div>
   </div>
-  
+
   <!-- 内容 -->
   <div class="relative z-10 text-center px-6">
     <!-- 逐字标题动画 -->
-    <h1 class="text-5xl md:text-7xl lg:text-8xl text-anemoi-deep mb-6 font-display tracking-wider char-reveal">
-      {titleChars.map((char, i) => (
-        <span 
-          class="char inline-block"
-          style={`animation-delay: ${0.3 + i * 0.08}s;`}
-        >
-          {char === ' ' ? '\u00A0' : char}
-        </span>
-      ))}
+    <h1
+      class="text-5xl md:text-7xl lg:text-8xl text-anemoi-deep mb-6 font-display tracking-wider char-reveal"
+    >
+      {
+        titleChars.map((char, i) => (
+          <span
+            class="char inline-block"
+            style={`animation-delay: ${0.3 + i * 0.08}s;`}
+          >
+            {char === " " ? "\u00A0" : char}
+          </span>
+        ))
+      }
     </h1>
-    
+
     <!-- 副标题延迟淡入 -->
-    <p 
+    <p
       class="text-lg md:text-xl text-anemoi-muted font-light tracking-[0.3em] opacity-0 animate-fade-in"
       style="animation-delay: 1.2s; animation-fill-mode: forwards;"
     >
       {subtitle}
     </p>
-    
+
     <!-- 装饰线 -->
-    <div 
+    <div
       class="w-16 h-px bg-anemoi-accent/40 mx-auto mt-8 opacity-0"
       style="animation: fadeIn 1s ease-out 1.6s forwards;"
-    ></div>
+    >
+    </div>
   </div>
-  
+
   <!-- 向下滚动指示器 -->
-  <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-0" style="animation: fadeIn 1s ease-out 2s forwards;">
-    <span class="text-xs text-anemoi-muted/60 tracking-[0.2em] font-light">SCROLL</span>
+  <div
+    class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-0"
+    style="animation: fadeIn 1s ease-out 2s forwards;"
+  >
+    <span class="text-xs text-anemoi-muted/60 tracking-[0.2em] font-light"
+      >SCROLL</span
+    >
     <div class="w-px h-8 bg-anemoi-muted/30 relative overflow-hidden">
-      <div class="w-full h-full bg-anemoi-accent/60 absolute top-0 left-0 animate-[slideDown_2s_ease-in-out_infinite]"></div>
+      <div
+        class="w-full h-full bg-anemoi-accent/60 absolute top-0 left-0 animate-[slideDown_2s_ease-in-out_infinite]"
+      >
+      </div>
     </div>
   </div>
 </section>
 
 <script>
-  (function() {
+  (function () {
     // 视差滚动效果
-    const parallaxElements = document.querySelectorAll('[data-parallax-speed]');
-    
+    const parallaxElements = document.querySelectorAll("[data-parallax-speed]");
+
     const handleScroll = () => {
       const scrollY = window.scrollY;
       parallaxElements.forEach((el) => {
-        const speed = parseFloat(el.getAttribute('data-parallax-speed') || '0');
+        const speed = parseFloat(el.getAttribute("data-parallax-speed") || "0");
         const yPos = scrollY * speed;
         (el as HTMLElement).style.transform = `translateY(${yPos}px)`;
       });
     };
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
   })();
 </script>

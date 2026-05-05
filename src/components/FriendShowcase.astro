@@ -1,0 +1,363 @@
+---
+export interface Friend {
+  id: string;
+  name: string;
+  subName?: string;
+  avatar: string;
+  preview: string;
+  category: string;
+  author: string;
+  slogan: string;
+  description: string;
+  url?: string;
+}
+
+export interface Props {
+  friends: Friend[];
+}
+
+const { friends } = Astro.props;
+---
+
+<div class="friend-showcase relative w-full min-h-screen overflow-hidden" style="background: linear-gradient(180deg, #89CFF0 0%, #4FA4F2 100%);">
+  {/* 背景装饰 */}
+  {/* 背景装饰已移除 */}
+
+  <div class="relative z-10 flex flex-col min-h-screen px-6 md:px-12 lg:px-20 pt-24 pb-12">
+    {/* 头像导航区 */}
+    <div class="flex-shrink-0">
+      {/* Desktop / Tablet: 网格布局 */}
+      <div class="hidden md:flex flex-wrap justify-center gap-4 max-w-4xl mx-auto mb-8 lg:mb-12">
+        {friends.map((friend, index) => (
+          <button
+            type="button"
+            class="friend-avatar-btn group relative rounded-full transition-all duration-300"
+            style="transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);"
+            data-index={index}
+            aria-label={`切换到 ${friend.name}`}
+          >
+            <img
+              src={friend.avatar}
+              alt={`${friend.name} 的头像`}
+              class="w-14 h-14 lg:w-[72px] lg:h-[72px] rounded-full object-cover border-2 border-white/40 group-hover:border-white group-hover:scale-105 transition-all duration-300"
+              style="transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);"
+              loading={index <= 2 ? "eager" : "lazy"}
+            />
+          </button>
+        ))}
+      </div>
+
+      {/* Mobile: 横向滚动 */}
+      <div class="md:hidden flex overflow-x-auto gap-3 pb-4 mb-6 -mx-2 px-2 scrollbar-hide" id="mobile-avatar-scroll">
+        {friends.map((friend, index) => (
+          <button
+            type="button"
+            class="friend-avatar-btn flex-shrink-0 group relative rounded-full transition-all duration-300"
+            style="transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);"
+            data-index={index}
+            aria-label={`切换到 ${friend.name}`}
+          >
+            <img
+              src={friend.avatar}
+              alt={`${friend.name} 的头像`}
+              class="w-14 h-14 rounded-full object-cover border-2 border-white/40 group-hover:border-white group-hover:scale-105 transition-all duration-300"
+              style="transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);"
+              loading={index <= 2 ? "eager" : "lazy"}
+            />
+          </button>
+        ))}
+      </div>
+    </div>
+
+    {/* 主体内容区 */}
+    <div class="flex-1 flex items-center justify-center relative">
+      {/* 左箭头 - Desktop only */}
+      <button
+        type="button"
+        id="friend-prev-btn"
+        class="hidden lg:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center text-white/70 hover:text-white transition-all duration-300 hover:-translate-x-1"
+        aria-label="上一个友链"
+      >
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6" />
+        </svg>
+      </button>
+
+      {/* 右箭头 - Desktop only */}
+      <button
+        type="button"
+        id="friend-next-btn"
+        class="hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center text-white/70 hover:text-white transition-all duration-300 hover:translate-x-1"
+        aria-label="下一个友链"
+      >
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6" />
+        </svg>
+      </button>
+
+      {/* 内容面板 */}
+      <div class="w-full max-w-6xl mx-auto">
+        <div id="friend-content" class="flex flex-col lg:flex-row gap-8 lg:gap-12 xl:gap-16 items-center lg:items-stretch transition-opacity duration-300 ease-out">
+          {/* 左侧 - 预览图 + 竖排 slogan */}
+          <div class="w-full lg:w-[55%] flex-shrink-0 relative flex items-center justify-center">
+            <div class="relative flex items-center">
+              {/* 竖排 slogan */}
+              <div class="hidden md:block mr-4 lg:mr-6 flex-shrink-0">
+                <p id="friend-slogan" class="vertical-slogan text-white font-serif text-sm lg:text-base tracking-[0.2em] whitespace-nowrap" style="text-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                  {friends[0]?.slogan || ''}
+                </p>
+              </div>
+              {/* 预览图 */}
+              <div class="relative" style="aspect-ratio: 3/4; max-height: 60vh;">
+                <img
+                  id="friend-preview"
+                  src={friends[0]?.preview || ''}
+                  alt={`${friends[0]?.name || ''} 的站点预览`}
+                  class="w-full h-full object-cover rounded-sm shadow-2xl"
+                  style="max-height: 60vh; width: auto;"
+                  loading="eager"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* 右侧 - 友链信息 */}
+          <div class="w-full lg:w-[45%] flex flex-col justify-center text-white">
+            {/* 分类 */}
+            <div class="mb-4">
+              <span id="friend-category" class="inline-block text-base lg:text-lg tracking-wider pb-1 border-b border-white/50">
+                {friends[0]?.category || ''}
+              </span>
+            </div>
+
+            {/* 博客名称 + 注音 */}
+            <h2 class="mb-2">
+              <span id="friend-name" class="font-serif text-3xl md:text-4xl lg:text-[2.5rem] tracking-[0.05em]">
+                {friends[0]?.name || ''}
+              </span>
+              <span id="friend-subname" class="text-sm lg:text-base opacity-90 ml-2" style={friends[0]?.subName ? '' : 'display: none;'}>
+              {friends[0]?.subName || ''}
+            </span>
+            </h2>
+
+            {/* 博主名 */}
+            <p id="friend-author" class="text-white/85 text-sm lg:text-base mb-6 tracking-wide">
+              {friends[0]?.author || ''}
+            </p>
+
+            {/* 外链按钮 */}
+            <div id="friend-link-wrapper" class="mb-8" style={friends[0]?.url ? '' : 'display: none;'}>
+              <a
+                id="friend-link"
+                href={friends[0]?.url || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-2 px-6 py-2 border border-white/60 rounded-full text-sm tracking-wider text-white/90 hover:border-white hover:bg-white/10 transition-all duration-300"
+              >
+                <span>访问站点</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+              </a>
+            </div>
+
+            {/* profile 标签 */}
+            <p class="text-sm italic opacity-80 mb-3">profile</p>
+
+            {/* 简介 */}
+            <p id="friend-description" class="text-white/90 text-sm lg:text-[0.95rem] leading-[1.8] font-sans">
+              {friends[0]?.description || ''}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* Mobile 底部圆点指示器 */}
+    <div class="lg:hidden flex justify-center gap-2 mt-8" id="mobile-dots">
+      {friends.map((_, index) => (
+        <button
+          type="button"
+          class="mobile-dot w-2 h-2 rounded-full bg-white/40 transition-all duration-300"
+          data-index={index}
+          aria-label={`第 ${index + 1} 个友链`}
+        />
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .vertical-slogan {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 头像选中态 */
+  .friend-avatar-btn.is-active img {
+    border-color: #fff;
+    box-shadow: 0 0 0 2px #fff, 0 0 12px rgba(255,255,255,0.4);
+    transform: scale(1.08);
+  }
+
+  /* 圆点指示器选中态 */
+  .mobile-dot.is-active {
+    background-color: #fff;
+    transform: scale(1.3);
+  }
+</style>
+
+<script define:vars={{ friendsData: friends }}>
+  (function() {
+    let currentIndex = 0;
+    const total = friendsData.length;
+
+    const contentEl = document.getElementById('friend-content');
+    const sloganEl = document.getElementById('friend-slogan');
+    const previewEl = document.getElementById('friend-preview');
+    const categoryEl = document.getElementById('friend-category');
+    const nameEl = document.getElementById('friend-name');
+    const subnameEl = document.getElementById('friend-subname');
+    const authorEl = document.getElementById('friend-author');
+    const linkWrapperEl = document.getElementById('friend-link-wrapper');
+    const linkEl = document.getElementById('friend-link');
+    const descEl = document.getElementById('friend-description');
+    const avatarBtns = document.querySelectorAll('.friend-avatar-btn');
+    const mobileDots = document.querySelectorAll('.mobile-dot');
+    const prevBtn = document.getElementById('friend-prev-btn');
+    const nextBtn = document.getElementById('friend-next-btn');
+    const mobileScroll = document.getElementById('mobile-avatar-scroll');
+    const mobileAvatarBtns = mobileScroll ? mobileScroll.querySelectorAll('.friend-avatar-btn') : [];
+
+
+    function updateUI(index) {
+      const friend = friendsData[index];
+      if (!friend) return;
+
+      // 淡出
+      if (contentEl) {
+        contentEl.style.opacity = '0';
+      }
+
+      setTimeout(() => {
+        // 更新内容
+        if (sloganEl) sloganEl.textContent = friend.slogan || '';
+        if (previewEl) {
+          previewEl.src = friend.preview || '';
+          previewEl.alt = `${friend.name} 的站点预览`;
+        }
+        if (categoryEl) categoryEl.textContent = friend.category || '';
+        if (nameEl) nameEl.textContent = friend.name || '';
+        if (subnameEl) {
+          if (friend.subName) {
+            subnameEl.textContent = friend.subName;
+            subnameEl.style.display = '';
+          } else {
+            subnameEl.style.display = 'none';
+          }
+        }
+        if (authorEl) authorEl.textContent = friend.author || '';
+        if (descEl) descEl.textContent = friend.description || '';
+
+        // 外链按钮
+        if (linkWrapperEl) {
+          if (friend.url) {
+            linkWrapperEl.style.display = '';
+            if (linkEl) {
+              linkEl.href = friend.url;
+            }
+          } else {
+            linkWrapperEl.style.display = 'none';
+          }
+        }
+
+        // 头像选中态
+        avatarBtns.forEach((btn, i) => {
+          if (i === index) {
+            btn.classList.add('is-active');
+          } else {
+            btn.classList.remove('is-active');
+          }
+        });
+
+        // 圆点指示器
+        mobileDots.forEach((dot, i) => {
+          if (i === index) {
+            dot.classList.add('is-active');
+          } else {
+            dot.classList.remove('is-active');
+          }
+        });
+
+        // 移动端头像滚动到可视区
+        if (mobileScroll && window.innerWidth < 768) {
+          const activeBtn = mobileAvatarBtns[index];
+          if (activeBtn) {
+            activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+          }
+        }
+
+        // 淡入
+        if (contentEl) {
+          contentEl.style.opacity = '1';
+        }
+      }, 150);
+    }
+
+    function goTo(index) {
+      if (index < 0) index = total - 1;
+      if (index >= total) index = 0;
+      currentIndex = index;
+      updateUI(currentIndex);
+    }
+
+    function prev() { goTo(currentIndex - 1); }
+    function next() { goTo(currentIndex + 1); }
+
+    // 头像点击
+    avatarBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.getAttribute('data-index') || '0', 10);
+        goTo(idx);
+      });
+    });
+
+    // 圆点点击
+    mobileDots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const idx = parseInt(dot.getAttribute('data-index') || '0', 10);
+        goTo(idx);
+      });
+    });
+
+    // 箭头按钮
+    if (prevBtn) prevBtn.addEventListener('click', prev);
+    if (nextBtn) nextBtn.addEventListener('click', next);
+
+    // 键盘支持
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prev();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        next();
+      }
+    });
+
+    // 初始化
+    if (total > 0) {
+      updateUI(0);
+    }
+  })();
+</script>

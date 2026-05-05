@@ -1,0 +1,89 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FriendShowcase from '../components/FriendShowcase.astro';
+
+/*
+ * 友链数据修改说明：
+ * 直接在下面的 friends 数组中添加、删除或修改对象即可。
+ * 每个友链对象包含以下字段：
+ *   - id: 唯一标识
+ *   - name: 博客名称（大标题）
+ *   - subName: 拼音/注音小字（可选）
+ *   - avatar: 圆形头像图片路径
+ *   - preview: 左侧大图/站点预览图路径
+ *   - category: 分类标签（带下划线的小标题）
+ *   - author: 博主名
+ *   - slogan: 左侧竖排文字
+ *   - description: 简介正文
+ *   - url: 外链地址（为空时隐藏"访问站点"按钮）
+ *
+ * 图片可存放于 public/images/ 目录下，引用时使用绝对路径如 "/images/avatar-1.jpg"。
+ * 也可使用外部图床链接（如 https://picsum.photos/seed/xxx/600/800）。
+ */
+const friends = [
+  {
+    id: '1',
+    name: '风之彼端',
+    subName: 'Kaze no Kanata',
+    avatar: '/images/avatar-1.jpg',
+    preview: '/images/friend-cover-1.jpg',
+    category: '随风而行的记录者',
+    author: '博主：风见遥',
+    slogan: '愿风指引你的方向',
+    description: '一个热爱旅行与摄影的博客，记录着作者在世界各地追逐风的足迹。文字温柔而克制，照片里总带着一抹天空的蓝。相信每一次出发都是为了更好地归来。',
+    url: 'https://example.com',
+  },
+  {
+    id: '2',
+    name: '夏空模様',
+    subName: 'Natsuzora Moyou',
+    avatar: '/images/avatar-2.jpg',
+    preview: '/images/friend-cover-2.jpg',
+    category: '描绘天空的画师',
+    author: '博主：夏川空',
+    slogan: '夏日晴空，云卷云舒',
+    description: '专注于视觉设计与插画创作的个人站点。这里不仅有精美的作品展示，也有关于色彩、构图与灵感的深度思考。每一幅画都是一段关于夏天的记忆。',
+    url: 'https://example.com',
+  },
+  {
+    id: '3',
+    name: '星降る夜に',
+    subName: 'Hoshi Furu Yoru ni',
+    avatar: '/images/avatar-3.jpg',
+    preview: '/images/friend-cover-3.jpg',
+    category: '守望星夜的诗人',
+    author: '博主：星野夜',
+    slogan: '在繁星之下，许下心愿',
+    description: '以诗歌、散文与短篇小说为主的文学创作博客。文字如星光般细碎而明亮，在寂静的夜里为路过的旅人点亮一盏灯。偶尔也有关于古典音乐与天文观测的随笔。',
+    url: '',
+  },
+  {
+    id: '4',
+    name: '薄荷色の風',
+    subName: 'Hakka Iro no Kaze',
+    avatar: 'https://picsum.photos/seed/mintwind/100/100',
+    preview: 'https://picsum.photos/seed/mintwind/600/800',
+    category: '调制生活滋味的人',
+    author: '博主：薄荷',
+    slogan: '清风拂面，万物可爱',
+    description: '分享日常生活、手作咖啡与烘焙食谱的温馨小站。作者相信慢下来才能品尝到生活的甘甜，每一篇文章都像一杯温度刚好的拿铁，让人忍不住微笑。',
+    url: 'https://example.com',
+  },
+  {
+    id: '5',
+    name: '雨音の庭',
+    subName: 'Amaoto no Niwa',
+    avatar: 'https://picsum.photos/seed/rainyard/100/100',
+    preview: 'https://picsum.photos/seed/rainyard/600/800',
+    category: '聆听雨声的思想者',
+    author: '博主：雨宫雫',
+    slogan: '雨落庭前，静听心音',
+    description: '探讨技术、哲学与人文交叉领域的独立博客。文章深入浅出，既有对前端工程化的实践经验，也有对存在主义与东方美学的思考。雨天的最佳读物。',
+    url: 'https://example.com',
+  },
+];
+---
+
+<BaseLayout title="友链 - anemoi-blog" description="anemoi-blog 的友链展示" transparentNav={false}>
+  <FriendShowcase friends={friends} />
+</BaseLayout>

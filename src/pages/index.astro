@@ -1,12 +1,12 @@
 ---
-import { getCollection } from 'astro:content';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
-import IntroText from '../components/IntroText.astro';
-import TimelineNews from '../components/TimelineNews.astro';
-import TagCloud from '../components/TagCloud.astro';
-const posts = (await getCollection('blog')).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import IntroText from "../components/IntroText.astro";
+import TimelineNews from "../components/TimelineNews.astro";
+import TagCloud from "../components/TagCloud.astro";
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 
 // 只取前6篇用于首页展示
@@ -15,33 +15,23 @@ const featuredPosts = posts.slice(0, 6);
 
 <BaseLayout title="anemoi-blog" description="风之所向，心之所往 - 个人博客">
   <!-- Hero 区域 -->
-  <Hero 
+  <Hero
     title="anemoi"
     subtitle="风之所向，心之所往"
-    backgroundImage="/images/hero-bg.jpg"
+    backgroundImage="/images/imgi_32_character_bg.jpg"
   />
-  
+
   <!-- 叙事感引言 -->
-  <IntroText 
-    lines={[
-      '风，从很远的地方吹来',
-      '带来了未知的故事',
-      '和未曾说出口的问候',
-    ]}
+  <IntroText
+    lines={["风，从很远的地方吹来", "带来了未知的故事", "和未曾说出口的问候"]}
   />
-  
+
   <!-- NEWS 时间线 -->
   <TimelineNews posts={featuredPosts} />
-  
+
   <!-- 标签云 -->
   <TagCloud />
-  
+
   <!-- 底部引言 -->
-  <IntroText 
-    lines={[
-      '每一个故事，都是一阵风',
-      '吹过就散了',
-      '却留下了痕迹',
-    ]}
-  />
+  <IntroText lines={["每一个故事，都是一阵风", "吹过就散了", "却留下了痕迹"]} />
 </BaseLayout>

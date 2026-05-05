@@ -1,40 +1,72 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import IntroText from '../components/IntroText.astro';
-import Timeline from '../components/Timeline.astro';
-import ScrollReveal from '../components/ScrollReveal.astro';
-import ParticleEffect from '../components/ParticleEffect.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import IntroText from "../components/IntroText.astro";
+import Timeline from "../components/Timeline.astro";
+import ScrollReveal from "../components/ScrollReveal.astro";
+import ParticleEffect from "../components/ParticleEffect.astro";
 
 const milestones = [
-  { date: '2024.01', title: '博客诞生', description: 'anemoi-blog 在冬日的暖阳中悄然诞生，记录关于风与故事的旅程。' },
-  { date: '2024.03', title: '第一篇故事', description: '写下第一篇属于自己的文字，开始了这段不知终点的书写之旅。' },
-  { date: '2024.06', title: '视觉重塑', description: '受 Key/Visual Arts 作品的启发，为博客注入了全新的视觉灵魂。' },
-  { date: '未来', title: '未完待续', description: '风还在吹，故事还在继续。感谢每一个路过这里的人。' },
+  {
+    date: "2024.01",
+    title: "博客诞生",
+    description: "anemoi-blog 在冬日的暖阳中悄然诞生，记录关于风与故事的旅程。",
+  },
+  {
+    date: "2024.03",
+    title: "第一篇故事",
+    description: "写下第一篇属于自己的文字，开始了这段不知终点的书写之旅。",
+  },
+  {
+    date: "2024.06",
+    title: "视觉重塑",
+    description: "受 Key/Visual Arts 作品的启发，为博客注入了全新的视觉灵魂。",
+  },
+  {
+    date: "未来",
+    title: "未完待续",
+    description: "风还在吹，故事还在继续。感谢每一个路过这里的人。",
+  },
 ];
 ---
 
-<BaseLayout title="关于 - anemoi-blog" description="关于 anemoi-blog" transparentNav={false}>
+<BaseLayout
+  title="关于 - anemoi-blog"
+  description="关于 anemoi-blog"
+  transparentNav={false}
+>
   <!-- 页面头部 -->
-  <section class="relative w-full h-[50vh] min-h-[350px] flex items-center justify-center overflow-hidden">
-    <div 
+  <section
+    class="relative w-full h-[50vh] min-h-[350px] flex items-center justify-center overflow-hidden"
+  >
+    <div
       class="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
-      style="background-image: url('/images/about-bg.jpg');"
+      style="background-image: url('/images/imgi_28_story_bg.jpg');"
       data-parallax-speed="0.2"
     >
-      <div class="absolute inset-0 bg-gradient-to-b from-anemoi-warm/40 via-transparent to-anemoi-bg/90"></div>
-      <div class="absolute inset-0 bg-gradient-to-r from-anemoi-lavender/10 via-transparent to-anemoi-sky/10"></div>
+      <div
+        class="absolute inset-0 bg-gradient-to-b from-anemoi-warm/40 via-transparent to-anemoi-bg/90"
+      >
+      </div>
+      <div
+        class="absolute inset-0 bg-gradient-to-r from-anemoi-lavender/10 via-transparent to-anemoi-sky/10"
+      >
+      </div>
     </div>
-    
+
     <div class="relative z-10 text-center px-6">
       <ScrollReveal>
-        <span class="text-xs text-anemoi-muted tracking-[0.3em] block mb-4">ABOUT</span>
-        <h1 class="text-4xl md:text-6xl font-display text-anemoi-deep tracking-wider">
+        <span class="text-xs text-anemoi-muted tracking-[0.3em] block mb-4"
+          >ABOUT</span
+        >
+        <h1
+          class="text-4xl md:text-6xl font-display text-anemoi-deep tracking-wider"
+        >
           关于
         </h1>
       </ScrollReveal>
     </div>
   </section>
-  
+
   <!-- 关于内容 -->
   <section class="max-w-3xl mx-auto px-6 py-16 md:py-24">
     <div class="space-y-16">
@@ -45,16 +77,19 @@ const milestones = [
             关于这个博客
           </h2>
           <p class="text-anemoi-text/80 leading-loose">
-            anemoi-blog 是一个以风为名的个人博客，视觉灵感来源于 Key/Visual Arts 旗下作品的经典气质。
+            anemoi-blog 是一个以风为名的个人博客，视觉灵感来源于 Key/Visual Arts
+            旗下作品的经典气质。
             这里记录着我的思考、故事与旅程，如同一阵风吹过，留下淡淡的痕迹。
           </p>
         </div>
       </ScrollReveal>
-      
+
       <!-- 两个板块 -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 py-8">
         <ScrollReveal delay={0.1}>
-          <div class="text-center md:text-left space-y-4 p-6 rounded-sm bg-anemoi-warm/30">
+          <div
+            class="text-center md:text-left space-y-4 p-6 rounded-sm bg-anemoi-warm/30"
+          >
             <h3 class="text-xl font-display text-anemoi-deep">写作</h3>
             <p class="text-sm text-anemoi-muted leading-relaxed">
               用文字记录生活中的瞬间与感悟，追求简洁而有力的表达。每一篇文章都是一阵风，吹过就散了，却留下了痕迹。
@@ -62,7 +97,9 @@ const milestones = [
           </div>
         </ScrollReveal>
         <ScrollReveal delay={0.2}>
-          <div class="text-center md:text-left space-y-4 p-6 rounded-sm bg-anemoi-warm/30">
+          <div
+            class="text-center md:text-left space-y-4 p-6 rounded-sm bg-anemoi-warm/30"
+          >
             <h3 class="text-xl font-display text-anemoi-deep">设计</h3>
             <p class="text-sm text-anemoi-muted leading-relaxed">
               相信留白的力量，追求优雅与克制的视觉呈现。不堆砌、不喧嚣，只有恰到好处的温柔。
@@ -70,32 +107,49 @@ const milestones = [
           </div>
         </ScrollReveal>
       </div>
-      
+
       <!-- 时间线 -->
       <div>
         <ScrollReveal>
-          <h2 class="text-2xl font-display text-center mb-12 text-anemoi-deep tracking-wider">
+          <h2
+            class="text-2xl font-display text-center mb-12 text-anemoi-deep tracking-wider"
+          >
             旅程
           </h2>
         </ScrollReveal>
         <Timeline events={milestones} />
       </div>
-      
+
       <!-- 联系 -->
       <ScrollReveal>
-        <div class="text-center pt-8 border-t border-anemoi-accent/20 space-y-4">
+        <div
+          class="text-center pt-8 border-t border-anemoi-accent/20 space-y-4"
+        >
           <h3 class="text-lg font-display text-anemoi-text">联系我</h3>
           <p class="text-anemoi-muted text-sm">
             如果你有任何想法或建议，欢迎通过以下方式与我交流。
           </p>
           <div class="flex justify-center gap-6 pt-2">
-            <a href="mailto:contact@example.com" class="text-sm text-anemoi-muted hover:text-anemoi-accent transition-colors tracking-wider">
+            <a
+              href="mailto:contact@example.com"
+              class="text-sm text-anemoi-muted hover:text-anemoi-accent transition-colors tracking-wider"
+            >
               邮箱
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="text-sm text-anemoi-muted hover:text-anemoi-accent transition-colors tracking-wider">
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm text-anemoi-muted hover:text-anemoi-accent transition-colors tracking-wider"
+            >
               X / Twitter
             </a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="text-sm text-anemoi-muted hover:text-anemoi-accent transition-colors tracking-wider">
+            <a
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-sm text-anemoi-muted hover:text-anemoi-accent transition-colors tracking-wider"
+            >
               GitHub
             </a>
           </div>
@@ -103,28 +157,23 @@ const milestones = [
       </ScrollReveal>
     </div>
   </section>
-  
-  <IntroText 
-    lines={[
-      '感谢你的到访',
-      '愿风常伴你左右',
-    ]}
-  />
+
+  <IntroText lines={["感谢你的到访", "愿风常伴你左右"]} />
 </BaseLayout>
 
 <script>
   // 关于页视差效果
-  (function() {
-    const parallaxElements = document.querySelectorAll('[data-parallax-speed]');
+  (function () {
+    const parallaxElements = document.querySelectorAll("[data-parallax-speed]");
     const handleScroll = () => {
       const scrollY = window.scrollY;
       parallaxElements.forEach((el) => {
-        const speed = parseFloat(el.getAttribute('data-parallax-speed') || '0');
+        const speed = parseFloat(el.getAttribute("data-parallax-speed") || "0");
         const yPos = scrollY * speed;
         (el as HTMLElement).style.transform = `translateY(${yPos}px)`;
       });
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
   })();
 </script>
