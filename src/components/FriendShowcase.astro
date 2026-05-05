@@ -19,9 +19,8 @@ export interface Props {
 const { friends } = Astro.props;
 ---
 
-<div class="friend-showcase relative w-full min-h-screen overflow-hidden" style="background: linear-gradient(180deg, #89CFF0 0%, #4FA4F2 100%);">
-  {/* 背景装饰 */}
-  {/* 背景装饰已移除 */}
+<div class="friend-showcase relative w-full min-h-screen overflow-hidden">
+  {/* 背景使用全局主题色 */}
 
   <div class="relative z-10 flex flex-col min-h-screen px-6 md:px-12 lg:px-20 pt-24 pb-12">
     {/* 头像导航区 */}
@@ -75,7 +74,7 @@ const { friends } = Astro.props;
       <button
         type="button"
         id="friend-prev-btn"
-        class="hidden lg:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center text-white/70 hover:text-white transition-all duration-300 hover:-translate-x-1"
+        class="hidden lg:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center text-anemoi-muted hover:text-anemoi-text transition-all duration-300 hover:-translate-x-1"
         aria-label="上一个友链"
       >
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -87,7 +86,7 @@ const { friends } = Astro.props;
       <button
         type="button"
         id="friend-next-btn"
-        class="hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center text-white/70 hover:text-white transition-all duration-300 hover:translate-x-1"
+        class="hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center text-anemoi-muted hover:text-anemoi-text transition-all duration-300 hover:translate-x-1"
         aria-label="下一个友链"
       >
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -103,7 +102,7 @@ const { friends } = Astro.props;
             <div class="relative flex items-center">
               {/* 竖排 slogan */}
               <div class="hidden md:block mr-4 lg:mr-6 flex-shrink-0">
-                <p id="friend-slogan" class="vertical-slogan text-white font-serif text-sm lg:text-base tracking-[0.2em] whitespace-nowrap" style="text-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <p id="friend-slogan" class="vertical-slogan text-anemoi-deep font-serif text-sm lg:text-base tracking-[0.2em] whitespace-nowrap">
                   {friends[0]?.slogan || ''}
                 </p>
               </div>
@@ -122,7 +121,7 @@ const { friends } = Astro.props;
           </div>
 
           {/* 右侧 - 友链信息 */}
-          <div class="w-full lg:w-[45%] flex flex-col justify-center text-white">
+          <div class="w-full lg:w-[45%] flex flex-col justify-center text-anemoi-text">
             {/* 分类 */}
             <div class="mb-4">
               <span id="friend-category" class="inline-block text-base lg:text-lg tracking-wider pb-1 border-b border-white/50">
@@ -135,13 +134,13 @@ const { friends } = Astro.props;
               <span id="friend-name" class="font-serif text-3xl md:text-4xl lg:text-[2.5rem] tracking-[0.05em]">
                 {friends[0]?.name || ''}
               </span>
-              <span id="friend-subname" class="text-sm lg:text-base opacity-90 ml-2" style={friends[0]?.subName ? '' : 'display: none;'}>
+              <span id="friend-subname" class="text-sm lg:text-base text-anemoi-muted ml-2" style={friends[0]?.subName ? '' : 'display: none;'}>
               {friends[0]?.subName || ''}
             </span>
             </h2>
 
             {/* 博主名 */}
-            <p id="friend-author" class="text-white/85 text-sm lg:text-base mb-6 tracking-wide">
+            <p id="friend-author" class="text-anemoi-muted text-sm lg:text-base mb-6 tracking-wide">
               {friends[0]?.author || ''}
             </p>
 
@@ -152,7 +151,7 @@ const { friends } = Astro.props;
                 href={friends[0]?.url || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 px-6 py-2 border border-white/60 rounded-full text-sm tracking-wider text-white/90 hover:border-white hover:bg-white/10 transition-all duration-300"
+                class="inline-flex items-center gap-2 px-6 py-2 border border-anemoi-accent/60 rounded-full text-sm tracking-wider text-anemoi-text hover:border-anemoi-accent hover:bg-anemoi-accent/10 transition-all duration-300"
               >
                 <span>访问站点</span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -164,10 +163,10 @@ const { friends } = Astro.props;
             </div>
 
             {/* profile 标签 */}
-            <p class="text-sm italic opacity-80 mb-3">profile</p>
+            <p class="text-sm italic text-anemoi-muted mb-3">profile</p>
 
             {/* 简介 */}
-            <p id="friend-description" class="text-white/90 text-sm lg:text-[0.95rem] leading-[1.8] font-sans">
+            <p id="friend-description" class="text-anemoi-text/90 text-sm lg:text-[0.95rem] leading-[1.8] font-sans">
               {friends[0]?.description || ''}
             </p>
           </div>
@@ -180,7 +179,7 @@ const { friends } = Astro.props;
       {friends.map((_, index) => (
         <button
           type="button"
-          class="mobile-dot w-2 h-2 rounded-full bg-white/40 transition-all duration-300"
+          class="mobile-dot w-2 h-2 rounded-full bg-anemoi-accent/40 transition-all duration-300"
           data-index={index}
           aria-label={`第 ${index + 1} 个友链`}
         />
@@ -205,14 +204,14 @@ const { friends } = Astro.props;
 
   /* 头像选中态 */
   .friend-avatar-btn.is-active img {
-    border-color: #fff;
-    box-shadow: 0 0 0 2px #fff, 0 0 12px rgba(255,255,255,0.4);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px var(--color-accent), 0 0 12px rgba(168,196,217,0.4);
     transform: scale(1.08);
   }
 
   /* 圆点指示器选中态 */
   .mobile-dot.is-active {
-    background-color: #fff;
+    background-color: var(--color-accent);
     transform: scale(1.3);
   }
 </style>
