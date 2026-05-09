@@ -3,7 +3,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import IntroText from "../components/IntroText.astro";
 import Timeline from "../components/Timeline.astro";
 import ScrollReveal from "../components/ScrollReveal.astro";
-import ParticleEffect from "../components/ParticleEffect.astro";
 
 const milestones = [
   {
@@ -172,6 +171,12 @@ const milestones = [
         (el as HTMLElement).style.transform = `translateY(${yPos}px)`;
       });
     };
+    // 避免 View Transitions 下重复注册
+    if ((window as any).__anemoi_scroll_about) {
+      window.removeEventListener("scroll", (window as any).__anemoi_scroll_about);
+    }
+    (window as any).__anemoi_scroll_about = handleScroll;
+    
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
   })();

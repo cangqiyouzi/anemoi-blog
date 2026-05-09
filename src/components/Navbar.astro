@@ -129,6 +129,12 @@ const navLinks = [
       }
     };
     
+    // 避免 View Transitions 下重复注册
+    if ((window as any).__anemoi_scroll_navbar) {
+      window.removeEventListener('scroll', (window as any).__anemoi_scroll_navbar);
+    }
+    (window as any).__anemoi_scroll_navbar = updateNav;
+    
     window.addEventListener('scroll', updateNav, { passive: true });
     updateNav();
     

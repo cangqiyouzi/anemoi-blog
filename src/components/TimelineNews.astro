@@ -36,9 +36,9 @@ function formatDate(date: Date) {
       </p>
     </ScrollReveal>
     
-    <!-- 时间�?-->
+    <!-- 时间线 -->
     <div class="relative">
-      <!-- 中线（桌面端�?-->
+      <!-- 中线（桌面端） -->
       <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-anemoi-accent/20 -translate-x-1/2"></div>
       
       {posts.map((post, index) => {
@@ -48,7 +48,7 @@ function formatDate(date: Date) {
         
         return (
           <div class={`relative md:flex items-center mb-16 last:mb-0 ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-            <!-- 日期节点（桌面端居中�?-->
+            <!-- 日期节点（桌面端居中） -->
             <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 z-10">
               <div class="w-3 h-3 rounded-full bg-anemoi-accent/60 border-2 border-anemoi-bg"></div>
             </div>
@@ -102,7 +102,7 @@ function formatDate(date: Date) {
               </ScrollReveal>
             </div>
             
-            <!-- 另一侧留�?-->
+            <!-- 另一侧留白 -->
             <div class="hidden md:block md:w-1/2"></div>
           </div>
         );

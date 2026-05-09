@@ -113,6 +113,12 @@ const titleChars = title.split("");
       });
     };
 
+    // 避免 View Transitions 下重复注册
+    if ((window as any).__anemoi_scroll_hero) {
+      window.removeEventListener("scroll", (window as any).__anemoi_scroll_hero);
+    }
+    (window as any).__anemoi_scroll_hero = handleScroll;
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
   })();

@@ -1,7 +1,7 @@
 ---
 ---
 
-<button 
+<button
   id="back-to-top"
   class="fixed bottom-8 right-8 z-40 w-10 h-10 rounded-full border border-anemoi-accent/30 bg-anemoi-bg/80 backdrop-blur-sm flex items-center justify-center text-anemoi-muted hover:text-anemoi-text hover:border-anemoi-accent/60 transition-all duration-300 opacity-0 translate-y-4 pointer-events-none"
   aria-label="返回顶部"
@@ -12,24 +12,37 @@
 </button>
 
 <script>
-  (function() {
-    const btn = document.getElementById('back-to-top');
-    if (!btn) return;
-    
-    const toggleVisibility = () => {
-      if (window.scrollY > window.innerHeight * 0.5) {
-        btn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
-        btn.classList.add('opacity-100', 'translate-y-0');
-      } else {
-        btn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
-        btn.classList.remove('opacity-100', 'translate-y-0');
+  (function () {
+    function init() {
+      const btn = document.getElementById('back-to-top');
+      if (!btn) return;
+
+      const toggle = () => {
+        if (window.scrollY > window.innerHeight * 0.5) {
+          btn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+          btn.classList.add('opacity-100', 'translate-y-0');
+        } else {
+          btn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+          btn.classList.remove('opacity-100', 'translate-y-0');
+        }
+      };
+
+      // 清理旧监听器，避免 View Transitions 下重复注册
+      if ((window as any).__anemoi_scroll_backToTop) {
+        window.removeEventListener('scroll', (window as any).__anemoi_scroll_backToTop);
       }
-    };
-    
-    window.addEventListener('scroll', toggleVisibility, { passive: true });
-    
-    btn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+      (window as any).__anemoi_scroll_backToTop = toggle;
+
+      window.addEventListener('scroll', toggle, { passive: true });
+      toggle(); // 立即同步一次当前滚动位置
+
+      btn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    // 首次加载 + 每次 View Transitions 导航后
+    init();
+    document.addEventListener('astro:page-load', init);
   })();
 </script>
