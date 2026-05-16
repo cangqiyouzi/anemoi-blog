@@ -12,7 +12,7 @@ const tocHeadings = headings.filter((h) => h.depth <= 3);
 ---
 
 {tocHeadings.length > 2 && (
-  <aside class="hidden lg:block fixed right-8 top-32 w-56 z-30">
+  <aside class="hidden lg:block w-56 flex-shrink-0 self-start">
     <div class="bg-anemoi-ivory/80 backdrop-blur-sm rounded-sm p-5 border border-anemoi-accent/10">
       <h4 class="text-xs font-sans tracking-[0.2em] text-anemoi-muted mb-4 uppercase">
         目录
@@ -37,7 +37,7 @@ const tocHeadings = headings.filter((h) => h.depth <= 3);
 
 <!-- 移动端 TOC 折叠按钮 -->
 {tocHeadings.length > 2 && (
-  <div class="lg:hidden mb-8">
+  <div class="lg:hidden mb-8 order-first w-full">
     <button 
       id="mobile-toc-toggle"
       class="w-full flex items-center justify-between px-4 py-3 bg-anemoi-warm/50 text-anemoi-text text-sm tracking-wider"

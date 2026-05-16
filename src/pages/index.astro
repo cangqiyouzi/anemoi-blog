@@ -9,8 +9,8 @@ const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 
-// 只取前6篇用于首页展示
-const featuredPosts = posts.slice(0, 6);
+// 只取前3篇用于首页展示
+const featuredPosts = posts.slice(0, 3);
 ---
 
 <BaseLayout title="anemoi-blog" description="风之所向，心之所往 - 个人博客">

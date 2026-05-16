@@ -155,6 +155,27 @@ declare module 'astro:content' {
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
+"secondhalf_chinese.md": {
+	id: "secondhalf_chinese.md";
+  slug: "secondhalf_chinese";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"secondhalf_english.md": {
+	id: "secondhalf_english.md";
+  slug: "secondhalf_english";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"secondhalf_japanese.md": {
+	id: "secondhalf_japanese.md";
+  slug: "secondhalf_japanese";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
 "silent-words.md": {
 	id: "silent-words.md";
   slug: "silent-words";

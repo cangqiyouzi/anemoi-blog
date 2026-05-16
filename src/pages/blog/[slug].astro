@@ -35,8 +35,6 @@ const formattedDate = post.data.date.toLocaleDateString('zh-CN', {
 ---
 
 <BaseLayout title={`${post.data.title} - anemoi-blog`} description={post.data.description}>
-  <TableOfContents headings={headings} />
-  
   <article class="min-h-screen">
     <!-- 文章头部 -->
     <header class="relative w-full h-[60vh] min-h-[450px] flex items-end justify-center overflow-hidden">
@@ -79,21 +77,17 @@ const formattedDate = post.data.date.toLocaleDateString('zh-CN', {
     </header>
     
     <!-- 文章内容 -->
-    <div class="max-w-3xl mx-auto px-6 py-16 md:py-24">
-      <ScrollReveal>
+    <div class="max-w-6xl mx-auto px-6 py-16 md:py-24 flex flex-col lg:flex-row lg:items-start gap-12">
+      <div class="flex-1 min-w-0">
         <div class="prose prose-lg max-w-none prose-headings:font-display prose-headings:font-normal prose-p:leading-loose prose-p:text-anemoi-text/90 prose-a:text-anemoi-accent hover:prose-a:text-anemoi-text prose-img:rounded-sm prose-hr:border-anemoi-accent/30 prose-blockquote:border-anemoi-accent/30 prose-blockquote:bg-anemoi-warm/30 prose-blockquote:py-2 prose-blockquote:px-4 prose-blockquote:not-italic">
           <Content />
         </div>
-      </ScrollReveal>
-      
-      <!-- 分享 -->
-      <ScrollReveal>
+        
+        <!-- 分享 -->
         <ShareButtons title={post.data.title} />
-      </ScrollReveal>
-      
-      <!-- 标签 -->
-      {post.data.tags.length > 0 && (
-        <ScrollReveal>
+        
+        <!-- 标签 -->
+        {post.data.tags.length > 0 && (
           <div class="flex flex-wrap gap-2 mt-8 pt-8 border-t border-anemoi-accent/10">
             {post.data.tags.map((tag) => (
               <a 
@@ -104,14 +98,16 @@ const formattedDate = post.data.date.toLocaleDateString('zh-CN', {
               </a>
             ))}
           </div>
-        </ScrollReveal>
-      )}
-      
-      <!-- 上下篇导航 -->
-      <PostNavigation 
-        prev={prevPost ? { slug: prevPost.slug, title: prevPost.data.title, coverImage: prevPost.data.coverImage } : null}
-        next={nextPost ? { slug: nextPost.slug, title: nextPost.data.title, coverImage: nextPost.data.coverImage } : null}
-      />
+        )}
+        
+        <!-- 上下篇导航 -->
+        <PostNavigation 
+          prev={prevPost ? { slug: prevPost.slug, title: prevPost.data.title, coverImage: prevPost.data.coverImage } : null}
+          next={nextPost ? { slug: nextPost.slug, title: nextPost.data.title, coverImage: nextPost.data.coverImage } : null}
+        />
+      </div>
+
+      <TableOfContents headings={headings} />
     </div>
   </article>
 </BaseLayout>
