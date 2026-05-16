@@ -1,5 +1,5 @@
-export function calculateReadingTime(content: string): number {
-  const cleanContent = content.replace(/<[^>]*>/g, '');
+export function calculateReadingTime(content: string | null | undefined): number {
+  const cleanContent = (content || '').replace(/<[^>]*>/g, '');
 
   // CJK 字符数（中日韩统一表意文字）
   const cjkChars = (cleanContent.match(/[\u4e00-\u9fff\u3400-\u4dbf]/g) || []).length;
