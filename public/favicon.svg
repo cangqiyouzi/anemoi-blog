@@ -1,12 +1,50 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
   <defs>
     <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#3A5A7C"/>
-      <stop offset="100%" stop-color="#2E4A6B"/>
+      <stop offset="0%" stop-color="#3d4f5f"/>
+      <stop offset="100%" stop-color="#2a3a4a"/>
+    </linearGradient>
+    <linearGradient id="feather-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d8cfe8"/>
+      <stop offset="50%" stop-color="#bdd6e8"/>
+      <stop offset="100%" stop-color="#a8c4d9"/>
+    </linearGradient>
+    <linearGradient id="wind-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#a8c4d9" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#c5b9d4" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#c5b9d4" stop-opacity="0"/>
     </linearGradient>
   </defs>
-  <circle cx="50" cy="50" r="46" fill="url(#bg)"/>
-  <path d="M28 55c8-4 18-6 28-5 6 1 12 3 16 6-8 2-16 1-24-1-7-2-14-4-20 0z" fill="#C5D8E8" opacity="0.95"/>
-  <path d="M32 42c10-5 22-6 32-3 5 2 9 5 12 8-10 1-20-1-29-4-6-2-12-3-15-1z" fill="#B0CDE4" opacity="0.9"/>
-  <path d="M36 68c6-3 14-4 21-3 5 1 9 3 12 5-6 1-13 0-19-2-5-1-10-2-14 0z" fill="#D6E5F0" opacity="0.85"/>
+
+  <!-- Solid background circle -->
+  <circle cx="32" cy="32" r="30" fill="url(#bg)"/>
+
+  <!-- Feather quill - larger and bolder -->
+  <path d="M46 10 C43 16, 38 22, 18 50 C16.5 52.5, 18 55, 21 53.5 C24 52, 27 49, 29 46 L46 10Z"
+        fill="url(#feather-grad)" opacity="0.95"/>
+
+  <!-- Feather center line (rachis) -->
+  <path d="M45 12 C41 22, 34 34, 20 52"
+        fill="none" stroke="#1e2a36" stroke-width="1.2" opacity="0.35"/>
+
+  <!-- Feather barbs - left side -->
+  <path d="M40 20 C35 24, 29 30, 24 38" fill="none" stroke="#a8c4d9" stroke-width="0.8" opacity="0.45"/>
+  <path d="M37 26 C32 30, 27 36, 22 43" fill="none" stroke="#a8c4d9" stroke-width="0.8" opacity="0.45"/>
+  <path d="M34 32 C30 36, 25 42, 21 48" fill="none" stroke="#a8c4d9" stroke-width="0.8" opacity="0.45"/>
+
+  <!-- Feather barbs - right side -->
+  <path d="M44 15 C47 20, 44 26, 39 31" fill="none" stroke="#d8cfe8" stroke-width="0.8" opacity="0.45"/>
+  <path d="M42 21 C45 26, 42 32, 37 37" fill="none" stroke="#d8cfe8" stroke-width="0.8" opacity="0.45"/>
+  <path d="M39 28 C42 32, 40 38, 35 42" fill="none" stroke="#d8cfe8" stroke-width="0.8" opacity="0.45"/>
+
+  <!-- Wind curves - more visible -->
+  <path d="M8 26 C15 23, 25 26, 33 22 C38 20, 44 20, 52 23"
+        fill="none" stroke="url(#wind-grad)" stroke-width="2" stroke-linecap="round"/>
+  <path d="M6 36 C13 33, 21 36, 29 33 C34 31, 39 30, 48 33"
+        fill="none" stroke="url(#wind-grad)" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/>
+  <path d="M12 45 C17 43, 25 44, 32 42 C37 41, 41 40, 48 42"
+        fill="none" stroke="url(#wind-grad)" stroke-width="1.2" stroke-linecap="round" opacity="0.4"/>
+
+  <!-- Ink dot at feather tip -->
+  <circle cx="19" cy="52" r="2" fill="#c5b9d4" opacity="0.7"/>
 </svg>

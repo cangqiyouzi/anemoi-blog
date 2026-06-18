@@ -2,7 +2,6 @@
 import { ViewTransitions } from 'astro:transitions';
 import Navbar from '../components/Navbar.astro';
 import BackToTop from '../components/BackToTop.astro';
-import ParticleEffect from '../components/ParticleEffect.astro';
 
 export interface Props {
   title: string;
@@ -49,8 +48,6 @@ const { title, description = 'anemoi-blog - 个人博客', transparentNav = true
   </script>
 </head>
 <body class="min-h-screen bg-anemoi-bg text-anemoi-text antialiased transition-colors duration-500">
-  <ParticleEffect />
-  
   <Navbar transparent={transparentNav} />
 
   <main id="main-content">
@@ -61,7 +58,7 @@ const { title, description = 'anemoi-blog - 个人博客', transparentNav = true
     <div class="space-y-4">
       <p class="font-display text-lg tracking-[0.15em] text-anemoi-text">anemoi</p>
       <p class="text-anemoi-muted text-xs tracking-widest">风之所向，心之所往</p>
-      <p class="text-anemoi-muted/60 text-xs tracking-wider"> anemoi-blog. All rights reserved.</p>
+      <p class="text-anemoi-muted/60 text-xs tracking-wider">&copy; {new Date().getFullYear()} anemoi-blog. All rights reserved.</p>
     </div>
   </footer>
   

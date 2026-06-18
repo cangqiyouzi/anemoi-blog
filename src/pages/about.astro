@@ -160,26 +160,8 @@ const milestones = [
 </BaseLayout>
 
 <script>
-  // 关于页视差效果
-  (function () {
-    const parallaxElements = document.querySelectorAll("[data-parallax-speed]");
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      parallaxElements.forEach((el) => {
-        const speed = parseFloat(el.getAttribute("data-parallax-speed") || "0");
-        const yPos = scrollY * speed;
-        (el as HTMLElement).style.transform = `translateY(${yPos}px)`;
-      });
-    };
-    // 避免 View Transitions 下重复注册
-    if ((window as any).__anemoi_scroll_about) {
-      window.removeEventListener("scroll", (window as any).__anemoi_scroll_about);
-    }
-    (window as any).__anemoi_scroll_about = handleScroll;
-    
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-  })();
+  import { initParallax } from '../utils/parallax';
+  initParallax();
 </script>
 
 <style define:vars={{ lightBg: "url('/images/imgi_28_story_bg.jpg')", darkBg: "url('/images/imgi_28_dark_bg.jpg')" }}>

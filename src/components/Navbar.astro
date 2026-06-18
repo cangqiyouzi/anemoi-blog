@@ -16,6 +16,7 @@ const navLinks = [
 
 <nav 
   id="main-nav"
+  data-transparent={transparent ? 'true' : 'false'}
   class={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${transparent ? 'bg-transparent' : 'bg-anemoi-bg/90 backdrop-blur-md shadow-sm'}`}
   transition:persist
 >
@@ -121,13 +122,18 @@ const navLinks = [
     const nav = document.getElementById('main-nav');
     if (!nav) return;
     
+    const isTransparent = nav.dataset.transparent !== 'false';
+    
     const updateNav = () => {
       if (window.scrollY > 80) {
         nav.classList.add('bg-anemoi-bg/90', 'backdrop-blur-md', 'shadow-sm');
         nav.classList.remove('bg-transparent');
-      } else {
+      } else if (isTransparent) {
         nav.classList.remove('bg-anemoi-bg/90', 'backdrop-blur-md', 'shadow-sm');
         nav.classList.add('bg-transparent');
+      } else {
+        nav.classList.add('bg-anemoi-bg/90', 'backdrop-blur-md', 'shadow-sm');
+        nav.classList.remove('bg-transparent');
       }
     };
     

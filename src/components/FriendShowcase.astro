@@ -343,8 +343,13 @@ const { friends } = Astro.props;
     if (prevBtn) prevBtn.addEventListener('click', prev);
     if (nextBtn) nextBtn.addEventListener('click', next);
 
-    // 键盘支持
-    document.addEventListener('keydown', (e) => {
+    // 键盘支持（仅在友链区域可见时生效）
+    const showcaseEl = document.querySelector('.friend-showcase');
+    function handleKeydown(e) {
+      if (!showcaseEl) return;
+      const rect = showcaseEl.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+      if (!isVisible) return;
       if (e.key === 'ArrowLeft') {
         e.preventDefault();
         prev();
@@ -352,6 +357,12 @@ const { friends } = Astro.props;
         e.preventDefault();
         next();
       }
+    }
+    document.addEventListener('keydown', handleKeydown);
+
+    // View Transitions 离开时清理全局监听器
+    document.addEventListener('astro:before-swap', () => {
+      document.removeEventListener('keydown', handleKeydown);
     });
 
     // 初始化

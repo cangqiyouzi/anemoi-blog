@@ -1,0 +1,36 @@
+/**
+ * 共享视差滚动效果
+ * 对所有带 data-parallax-speed 属性的元素应用视差效果
+ * 自动处理 View Transitions 下的监听器注册/清理
+ */
+export function initParallax() {
+  const parallaxElements = document.querySelectorAll('[data-parallax-speed]');
+  if (parallaxElements.length === 0) return;
+
+  const handleScroll = () => {
+    const scrollY = window.scrollY;
+    parallaxElements.forEach((el) => {
+      const speed = parseFloat(el.getAttribute('data-parallax-speed') || '0');
+      const yPos = scrollY * speed;
+      (el as HTMLElement).style.transform = `translateY(${yPos}px)`;
+    });
+  };
+
+  const KEY = '__anemoi_parallax';
+
+  // 避免 View Transitions 下重复注册
+  if ((window as any)[KEY]) {
+    window.removeEventListener('scroll', (window as any)[KEY]);
+  }
+  (window as any)[KEY] = handleScroll;
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+  handleScroll();
+
+  // 离开页面时清理
+  const cleanup = () => {
+    window.removeEventListener('scroll', handleScroll);
+    delete (window as any)[KEY];
+  };
+  document.addEventListener('astro:before-swap', cleanup, { once: true });
+}

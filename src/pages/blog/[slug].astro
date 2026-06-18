@@ -64,7 +64,7 @@ const formattedDate = post.data.date.toLocaleDateString('zh-CN', {
             <div class="flex flex-wrap justify-center gap-2 mt-8">
               {post.data.tags.map((tag) => (
                 <a 
-                  href={`/tags/${encodeURIComponent(tag)}/`}
+                  href={`/tags/${tag}/`}
                   class="text-xs px-3 py-1 border border-anemoi-accent/30 text-anemoi-muted hover:text-anemoi-text hover:border-anemoi-accent/60 rounded-full tracking-wider transition-all duration-300"
                 >
                   {tag}
@@ -91,7 +91,7 @@ const formattedDate = post.data.date.toLocaleDateString('zh-CN', {
           <div class="flex flex-wrap gap-2 mt-8 pt-8 border-t border-anemoi-accent/10">
             {post.data.tags.map((tag) => (
               <a 
-                href={`/tags/${encodeURIComponent(tag)}/`}
+                href={`/tags/${tag}/`}
                 class="text-sm px-4 py-2 bg-anemoi-warm/50 text-anemoi-muted hover:text-anemoi-text hover:bg-anemoi-warm transition-all duration-300 rounded-sm tracking-wider"
               >
                 {tag}
@@ -113,24 +113,6 @@ const formattedDate = post.data.date.toLocaleDateString('zh-CN', {
 </BaseLayout>
 
 <script>
-  // 文章页视差效果
-  (function() {
-    const parallaxElements = document.querySelectorAll('[data-parallax-speed]');
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      parallaxElements.forEach((el) => {
-        const speed = parseFloat(el.getAttribute('data-parallax-speed') || '0');
-        const yPos = scrollY * speed;
-        (el as HTMLElement).style.transform = `translateY(${yPos}px)`;
-      });
-    };
-    // 避免 View Transitions 下重复注册
-    if ((window as any).__anemoi_scroll_blogSlug) {
-      window.removeEventListener('scroll', (window as any).__anemoi_scroll_blogSlug);
-    }
-    (window as any).__anemoi_scroll_blogSlug = handleScroll;
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-  })();
+  import { initParallax } from '../../utils/parallax';
+  initParallax();
 </script>
