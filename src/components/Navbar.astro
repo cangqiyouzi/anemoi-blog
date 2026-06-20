@@ -34,7 +34,8 @@ const navLinks = [
       {navLinks.map((link) => (
         <a 
           href={link.href}
-          class={`relative py-1 transition-colors duration-300 ${
+          data-nav-link
+          class={`nav-link relative py-1 transition-colors duration-300 ${
             currentPath === link.href 
               ? 'text-anemoi-deep' 
               : 'text-anemoi-muted hover:text-anemoi-text'
@@ -42,7 +43,7 @@ const navLinks = [
         >
           {link.label}
           {currentPath === link.href && (
-            <span class="absolute bottom-0 left-0 w-full h-px bg-anemoi-accent/60" />
+            <span class="nav-active-indicator absolute bottom-0 left-0 w-full h-px bg-anemoi-accent/60" />
           )}
         </a>
       ))}
@@ -91,7 +92,8 @@ const navLinks = [
       {navLinks.map((link) => (
         <a 
           href={link.href}
-          class={`block text-sm tracking-wider py-2 transition-colors duration-300 ${
+          data-nav-link
+          class={`nav-link block text-sm tracking-wider py-2 transition-colors duration-300 ${
             currentPath === link.href 
               ? 'text-anemoi-deep' 
               : 'text-anemoi-muted hover:text-anemoi-text'
@@ -215,7 +217,51 @@ const navLinks = [
     };
     initIcons();
     
-    // View Transitions 页面切换后更新图标
-    document.addEventListener('astro:page-load', initIcons);
+    // View Transitions 页面切换后更新图标和高亮
+    document.addEventListener('astro:page-load', () => {
+      initIcons();
+      resetMenu();
+      updateActiveLink();
+    });
+
+    // 更新导航栏当前页面高亮
+    function updateActiveLink() {
+      if (!nav) return;
+      const currentPath = window.location.pathname;
+      const navLinks = nav.querySelectorAll('a[data-nav-link]');
+      navLinks.forEach((link) => {
+        const href = link.getAttribute('href');
+        if (!href) return;
+        const isActive = currentPath === href;
+        // 更新文字颜色类
+        link.classList.toggle('text-anemoi-deep', isActive);
+        link.classList.toggle('text-anemoi-muted', !isActive);
+        // 更新底部高亮条
+        let indicator = link.querySelector('.nav-active-indicator');
+        if (isActive && !indicator) {
+          indicator = document.createElement('span');
+          indicator.className = 'nav-active-indicator absolute bottom-0 left-0 w-full h-px bg-anemoi-accent/60';
+          link.appendChild(indicator);
+        } else if (!isActive && indicator) {
+          indicator.remove();
+        }
+      });
+    }
+    updateActiveLink();
+
+    // 重置移动端菜单状态
+    function resetMenu() {
+      menuOpen = false;
+      if (mobileMenu) {
+        mobileMenu.classList.add('max-h-0', 'opacity-0');
+        mobileMenu.classList.remove('max-h-64', 'opacity-100');
+      }
+      if (iconOpen && iconClose) {
+        iconOpen.classList.remove('hidden');
+        iconClose.classList.add('hidden');
+      }
+      menuBtn?.setAttribute('aria-expanded', 'false');
+      menuBtn?.setAttribute('aria-label', '打开菜单');
+    }
   })();
 </script>

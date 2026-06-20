@@ -5,7 +5,7 @@ import TableOfContents from '../../components/TableOfContents.astro';
 import PostNavigation from '../../components/PostNavigation.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import ScrollReveal from '../../components/ScrollReveal.astro';
-import { calculateReadingTime } from '../../utils/readingTime';
+import { calculateReadingTime, countWords } from '../../utils/readingTime';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -18,8 +18,9 @@ export async function getStaticPaths() {
 const { post, allPosts } = Astro.props;
 const { Content, headings } = await post.render();
 
-// 计算阅读时间
+// 计算阅读时间和字数
 const readTime = calculateReadingTime(post.body || '');
+const wordCount = countWords(post.body || '');
 
 // 获取上一篇/下一篇
 const sortedPosts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -54,7 +55,7 @@ const formattedDate = post.data.date.toLocaleDateString('zh-CN', {
           </time>
           <div class="flex items-center justify-center gap-3 mb-6">
             <span class="w-8 h-px bg-anemoi-accent/30"></span>
-            <span class="text-xs text-anemoi-muted tracking-wider">{readTime} 分钟阅读</span>
+            <span class="text-xs text-anemoi-muted tracking-wider">{readTime} 分钟阅读 · {wordCount} 字</span>
             <span class="w-8 h-px bg-anemoi-accent/30"></span>
           </div>
           <h1 class="text-3xl md:text-5xl lg:text-6xl font-display text-anemoi-deep leading-tight">

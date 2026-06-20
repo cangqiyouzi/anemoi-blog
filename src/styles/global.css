@@ -138,15 +138,6 @@ a:hover {
   }
 }
 
-/* 花瓣动画容器 */
-.petal {
-  position: fixed;
-  top: -20px;
-  pointer-events: none;
-  z-index: 50;
-  opacity: 0;
-}
-
 /* 页面过渡优化 */
 ::view-transition-old(root),
 ::view-transition-new(root) {
@@ -234,4 +225,36 @@ a:hover {
 
 .dark .prose thead {
   border-bottom-color: var(--color-accent);
+}
+
+/* prefers-reduced-motion 动画降级 */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    animation: none;
+  }
+
+  .char-reveal .char {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .animate-fade-in,
+  [style*="animation"] {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0s;
+  }
 }

@@ -1,3 +1,19 @@
+export function countWords(content: string | null | undefined): number {
+  const cleanContent = (content || '').replace(/<[^>]*>/g, '');
+
+  // CJK 字符数
+  const cjkChars = (cleanContent.match(/[\u4e00-\u9fff\u3400-\u4dbf]/g) || []).length;
+
+  // 非 CJK 词数
+  const nonCjkWords = cleanContent
+    .replace(/[\u4e00-\u9fff\u3400-\u4dbf]/g, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean).length;
+
+  return cjkChars + nonCjkWords;
+}
+
 export function calculateReadingTime(content: string | null | undefined): number {
   const cleanContent = (content || '').replace(/<[^>]*>/g, '');
 

@@ -30,7 +30,7 @@ const { friends } = Astro.props;
         {friends.map((friend, index) => (
           <button
             type="button"
-            class="friend-avatar-btn group relative rounded-full transition-all duration-300"
+            class="friend-avatar-btn group relative rounded-full w-14 h-14 lg:w-[72px] lg:h-[72px] transition-all duration-300 cursor-pointer"
             style="transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);"
             data-index={index}
             aria-label={`切换到 ${friend.name}`}
@@ -38,7 +38,7 @@ const { friends } = Astro.props;
             <img
               src={friend.avatar}
               alt={`${friend.name} 的头像`}
-              class="w-14 h-14 lg:w-[72px] lg:h-[72px] rounded-full object-cover border-2 border-white/40 group-hover:border-white group-hover:scale-105 transition-all duration-300"
+              class="w-full h-full rounded-full object-cover transition-all duration-300 pointer-events-none"
               style="transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);"
               loading={index <= 2 ? "eager" : "lazy"}
             />
@@ -51,7 +51,7 @@ const { friends } = Astro.props;
         {friends.map((friend, index) => (
           <button
             type="button"
-            class="friend-avatar-btn flex-shrink-0 group relative rounded-full transition-all duration-300"
+            class="friend-avatar-btn flex-shrink-0 group relative rounded-full w-14 h-14 transition-all duration-300 cursor-pointer"
             style="transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);"
             data-index={index}
             aria-label={`切换到 ${friend.name}`}
@@ -59,7 +59,7 @@ const { friends } = Astro.props;
             <img
               src={friend.avatar}
               alt={`${friend.name} 的头像`}
-              class="w-14 h-14 rounded-full object-cover border-2 border-white/40 group-hover:border-white group-hover:scale-105 transition-all duration-300"
+              class="w-full h-full rounded-full object-cover transition-all duration-300 pointer-events-none"
               style="transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);"
               loading={index <= 2 ? "eager" : "lazy"}
             />
@@ -74,7 +74,7 @@ const { friends } = Astro.props;
       <button
         type="button"
         id="friend-prev-btn"
-        class="hidden lg:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center text-anemoi-muted hover:text-anemoi-text transition-all duration-300 hover:-translate-x-1"
+        class="hidden lg:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center text-anemoi-muted hover:text-anemoi-text transition-all duration-300 hover:-translate-x-1 cursor-pointer"
         aria-label="上一个友链"
       >
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -86,7 +86,7 @@ const { friends } = Astro.props;
       <button
         type="button"
         id="friend-next-btn"
-        class="hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center text-anemoi-muted hover:text-anemoi-text transition-all duration-300 hover:translate-x-1"
+        class="hidden lg:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center text-anemoi-muted hover:text-anemoi-text transition-all duration-300 hover:translate-x-1 cursor-pointer"
         aria-label="下一个友链"
       >
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -179,7 +179,7 @@ const { friends } = Astro.props;
       {friends.map((_, index) => (
         <button
           type="button"
-          class="mobile-dot w-2 h-2 rounded-full bg-anemoi-accent/40 transition-all duration-300"
+          class="mobile-dot w-2 h-2 rounded-full bg-anemoi-accent/40 transition-all duration-300 cursor-pointer"
           data-index={index}
           aria-label={`第 ${index + 1} 个友链`}
         />
@@ -202,11 +202,36 @@ const { friends } = Astro.props;
     display: none;
   }
 
-  /* 头像选中态 */
-  .friend-avatar-btn.is-active img {
+  /* 头像按钮：移除默认焦点轮廓 */
+  .friend-avatar-btn {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent;
+    overflow: hidden;
+    border: 2px solid transparent;
+    padding: 2px;
+  }
+  .friend-avatar-btn:focus,
+  .friend-avatar-btn:active,
+  .friend-avatar-btn:focus-visible {
+    outline: none !important;
+  }
+  /* 选中态获得焦点时保持发光效果 */
+  .friend-avatar-btn.is-active:focus,
+  .friend-avatar-btn.is-active:active {
+    box-shadow: 0 0 0 2px var(--color-accent), 0 0 12px rgba(168,196,217,0.4);
+  }
+
+  /* 头像选中态 - 应用在按钮上而非图片上，避免图片溢出 */
+  .friend-avatar-btn.is-active {
     border-color: var(--color-accent);
     box-shadow: 0 0 0 2px var(--color-accent), 0 0 12px rgba(168,196,217,0.4);
-    transform: scale(1.08);
+  }
+  .friend-avatar-btn.is-active img {
+    border-color: transparent;
+    box-shadow: none;
   }
 
   /* 圆点指示器选中态 */
@@ -328,6 +353,7 @@ const { friends } = Astro.props;
       btn.addEventListener('click', () => {
         const idx = parseInt(btn.getAttribute('data-index') || '0', 10);
         goTo(idx);
+        btn.blur();
       });
     });
 
@@ -336,6 +362,7 @@ const { friends } = Astro.props;
       dot.addEventListener('click', () => {
         const idx = parseInt(dot.getAttribute('data-index') || '0', 10);
         goTo(idx);
+        dot.blur();
       });
     });
 

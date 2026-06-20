@@ -40,6 +40,15 @@ const { delay = 0, class: className = '', tag: Tag = 'div' } = Astro.props;
     }
 
     function observeAll() {
+      // prefers-reduced-motion 时直接显示所有元素，不观察
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) {
+        document.querySelectorAll('.reveal:not(.is-visible)').forEach((el) => {
+          el.classList.add('is-visible');
+        });
+        return;
+      }
+
       const observer = getOrCreateObserver();
       document.querySelectorAll('.reveal:not(.is-visible)').forEach((el) => {
         observer.observe(el);

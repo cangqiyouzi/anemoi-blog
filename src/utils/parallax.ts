@@ -7,6 +7,10 @@ export function initParallax() {
   const parallaxElements = document.querySelectorAll('[data-parallax-speed]');
   if (parallaxElements.length === 0) return;
 
+  // prefers-reduced-motion 时禁用视差效果
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (prefersReducedMotion.matches) return;
+
   const handleScroll = () => {
     const scrollY = window.scrollY;
     parallaxElements.forEach((el) => {
