@@ -2,7 +2,7 @@
 title: "Humanity's Second Half"
 date: 2026-05-11
 description: 'A polished English version of the long-form essay on how AI is reshaping human civilization.'
-coverImage: '/images/cover-1.jpg'
+coverImage: '/images/cover-2.jpg'
 tags: ['AI', '思考', '翻译']
 ---
 

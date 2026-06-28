@@ -2,7 +2,7 @@
 title: '人類の後半戦'
 date: 2026-05-11
 description: '人工知能が人類文明をどのように再構築するかについての長文考察、日本語版。'
-coverImage: '/images/cover-1.jpg'
+coverImage: '/images/cover-3.jpg'
 tags: ['AI', '思考', '翻译']
 ---
 
