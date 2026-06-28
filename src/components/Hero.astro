@@ -13,6 +13,9 @@ const {
   darkBackgroundImage = "/images/imgi_32_dark_bg.jpg",
 } = Astro.props;
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const withBase = (path: string) => base + (path.startsWith('/') ? path : '/' + path);
+
 // 将标题拆分为字符数组，用于逐字动画
 const titleChars = title.split("");
 ---
@@ -104,7 +107,7 @@ const titleChars = title.split("");
   initParallax();
 </script>
 
-<style define:vars={{ lightBg: `url('${backgroundImage}')`, darkBg: `url('${darkBackgroundImage}')` }}>
+<style define:vars={{ lightBg: `url('${withBase(backgroundImage)}')`, darkBg: `url('${withBase(darkBackgroundImage)}')` }}>
   .hero-bg {
     background-image: var(--lightBg);
   }

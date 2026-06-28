@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <BaseLayout title="404 - 页面未找到 | anemoi-blog" description="你访问的页面不存在">
@@ -31,7 +32,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <!-- 返回按钮 -->
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
         <a
-          href="/"
+          href={base + '/'}
           class="group inline-flex items-center gap-2 px-6 py-2.5 border border-anemoi-accent/40 rounded-full text-sm tracking-widest text-anemoi-text hover:bg-anemoi-accent/10 hover:border-anemoi-accent transition-all duration-300"
         >
           <svg class="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -40,7 +41,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           回到首页
         </a>
         <a
-          href="/archive"
+          href={base + '/archive/'}
           class="group inline-flex items-center gap-2 px-6 py-2.5 border border-anemoi-accent/20 rounded-full text-sm tracking-widest text-anemoi-muted hover:text-anemoi-text hover:border-anemoi-accent/40 transition-all duration-300"
         >
           浏览归档

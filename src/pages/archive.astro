@@ -21,6 +21,8 @@ function formatDate(date: Date) {
   const d = String(date.getDate()).padStart(2, '0');
   return `${m}.${d}`;
 }
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <BaseLayout title="归档 - anemoi-blog" description="按时间浏览所有文章">
@@ -79,7 +81,7 @@ function formatDate(date: Date) {
                   <div class={`ml-6 md:ml-0 md:w-1/2 ${groupIndex % 2 === 0 ? 'md:pl-10' : 'md:pr-10 md:text-right'}`}>
                     <ScrollReveal delay={index * 0.05}>
                       <a 
-                        href={`/blog/${post.slug}/`}
+                        href={base + `/blog/${post.slug}/`}
                         class="group block py-2"
                       >
                         <div class={`flex items-baseline gap-3 ${groupIndex % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>

@@ -8,6 +8,8 @@ export interface Props {
 }
 
 const { title, date, slug, coverImage = '/images/cover-1.jpg', description } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const withBase = (path: string) => base + (path.startsWith('/') ? path : '/' + path);
 
 const formattedDate = date.toLocaleDateString('zh-CN', {
   year: 'numeric',
@@ -17,11 +19,11 @@ const formattedDate = date.toLocaleDateString('zh-CN', {
 ---
 
 <article class="group cursor-pointer">
-  <a href={`/blog/${slug}/`} class="block">
+  <a href={base + `/blog/${slug}/`} class="block">
     <!-- 图片容器 -->
     <div class="relative overflow-hidden rounded-sm mb-4 aspect-[16/10]">
       <img 
-        src={coverImage} 
+        src={withBase(coverImage)} 
         alt={title}
         width="800"
         height="500"

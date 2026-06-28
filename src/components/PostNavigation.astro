@@ -13,6 +13,8 @@ export interface Props {
 }
 
 const { prev, next } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const withBase = (path: string) => base + (path.startsWith('/') ? path : '/' + path);
 ---
 
 {(prev || next) && (
@@ -20,14 +22,14 @@ const { prev, next } = Astro.props;
     <!-- 上一篇 -->
     {prev ? (
       <a 
-        href={`/blog/${prev.slug}/`}
+        href={base + `/blog/${prev.slug}/`}
         class="group block p-4 rounded-sm hover:bg-anemoi-warm/30 transition-colors duration-300"
       >
         <span class="text-xs text-anemoi-muted tracking-wider block mb-2">上一篇</span>
         <div class="flex items-center gap-4">
           <div class="w-16 h-16 rounded-sm overflow-hidden flex-shrink-0">
             <img 
-              src={prev.coverImage || '/images/cover-1.jpg'} 
+              src={withBase(prev.coverImage || '/images/cover-1.jpg')} 
               alt=""
               class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               loading="lazy"
@@ -45,14 +47,14 @@ const { prev, next } = Astro.props;
     <!-- 下一篇 -->
     {next ? (
       <a 
-        href={`/blog/${next.slug}/`}
+        href={base + `/blog/${next.slug}/`}
         class="group block p-4 rounded-sm hover:bg-anemoi-warm/30 transition-colors duration-300 text-right md:text-right"
       >
         <span class="text-xs text-anemoi-muted tracking-wider block mb-2">下一篇</span>
         <div class="flex items-center gap-4 flex-row-reverse">
           <div class="w-16 h-16 rounded-sm overflow-hidden flex-shrink-0">
             <img 
-              src={next.coverImage || '/images/cover-1.jpg'} 
+              src={withBase(next.coverImage || '/images/cover-1.jpg')} 
               alt=""
               class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               loading="lazy"
