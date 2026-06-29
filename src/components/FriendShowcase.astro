@@ -107,13 +107,12 @@ const { friends } = Astro.props;
                 </p>
               </div>
               {/* 预览图 */}
-              <div class="relative" style="aspect-ratio: 3/4; max-height: 60vh;">
+              <div class="relative flex-shrink-0 w-56 sm:w-64 md:w-72 lg:w-80" style="aspect-ratio: 3/4;">
                 <img
                   id="friend-preview"
                   src={friends[0]?.preview || ''}
                   alt={`${friends[0]?.name || ''} 的站点预览`}
                   class="w-full h-full object-cover rounded-sm shadow-2xl"
-                  style="max-height: 60vh; width: auto;"
                   loading="eager"
                 />
               </div>
@@ -243,158 +242,165 @@ const { friends } = Astro.props;
 
 <script define:vars={{ friendsData: friends }}>
   (function() {
+    // 避免 View Transitions 软加载时重复注册事件
+    if (window.__anemoi_friend_showcase_setup) {
+      return;
+    }
+    window.__anemoi_friend_showcase_setup = true;
+
     let currentIndex = 0;
     const total = friendsData.length;
+    let keydownHandler = null;
 
-    const contentEl = document.getElementById('friend-content');
-    const sloganEl = document.getElementById('friend-slogan');
-    const previewEl = document.getElementById('friend-preview');
-    const categoryEl = document.getElementById('friend-category');
-    const nameEl = document.getElementById('friend-name');
-    const subnameEl = document.getElementById('friend-subname');
-    const authorEl = document.getElementById('friend-author');
-    const linkWrapperEl = document.getElementById('friend-link-wrapper');
-    const linkEl = document.getElementById('friend-link');
-    const descEl = document.getElementById('friend-description');
-    const avatarBtns = document.querySelectorAll('.friend-avatar-btn');
-    const mobileDots = document.querySelectorAll('.mobile-dot');
-    const prevBtn = document.getElementById('friend-prev-btn');
-    const nextBtn = document.getElementById('friend-next-btn');
-    const mobileScroll = document.getElementById('mobile-avatar-scroll');
-    const mobileAvatarBtns = mobileScroll ? mobileScroll.querySelectorAll('.friend-avatar-btn') : [];
+    function setup() {
+      currentIndex = 0;
 
+      const contentEl = document.getElementById('friend-content');
+      const sloganEl = document.getElementById('friend-slogan');
+      const previewEl = document.getElementById('friend-preview');
+      const categoryEl = document.getElementById('friend-category');
+      const nameEl = document.getElementById('friend-name');
+      const subnameEl = document.getElementById('friend-subname');
+      const authorEl = document.getElementById('friend-author');
+      const linkWrapperEl = document.getElementById('friend-link-wrapper');
+      const linkEl = document.getElementById('friend-link');
+      const descEl = document.getElementById('friend-description');
+      const avatarBtns = document.querySelectorAll('.friend-avatar-btn');
+      const mobileDots = document.querySelectorAll('.mobile-dot');
+      const prevBtn = document.getElementById('friend-prev-btn');
+      const nextBtn = document.getElementById('friend-next-btn');
+      const mobileScroll = document.getElementById('mobile-avatar-scroll');
+      const mobileAvatarBtns = mobileScroll ? mobileScroll.querySelectorAll('.friend-avatar-btn') : [];
+      const showcaseEl = document.querySelector('.friend-showcase');
 
-    function updateUI(index) {
-      const friend = friendsData[index];
-      if (!friend) return;
+      function updateUI(index, animate) {
+        if (animate === undefined) animate = true;
+        const friend = friendsData[index];
+        if (!friend) return;
 
-      // 淡出
-      if (contentEl) {
-        contentEl.style.opacity = '0';
-      }
-
-      setTimeout(() => {
-        // 更新内容
-        if (sloganEl) sloganEl.textContent = friend.slogan || '';
-        if (previewEl) {
-          previewEl.src = friend.preview || '';
-          previewEl.alt = `${friend.name} 的站点预览`;
-        }
-        if (categoryEl) categoryEl.textContent = friend.category || '';
-        if (nameEl) nameEl.textContent = friend.name || '';
-        if (subnameEl) {
-          if (friend.subName) {
-            subnameEl.textContent = friend.subName;
-            subnameEl.style.display = '';
-          } else {
-            subnameEl.style.display = 'none';
+        function applyUpdate() {
+          if (sloganEl) sloganEl.textContent = friend.slogan || '';
+          if (previewEl) {
+            previewEl.src = friend.preview || '';
+            previewEl.alt = `${friend.name} 的站点预览`;
           }
-        }
-        if (authorEl) authorEl.textContent = friend.author || '';
-        if (descEl) descEl.textContent = friend.description || '';
-
-        // 外链按钮
-        if (linkWrapperEl) {
-          if (friend.url) {
-            linkWrapperEl.style.display = '';
-            if (linkEl) {
-              linkEl.href = friend.url;
+          if (categoryEl) categoryEl.textContent = friend.category || '';
+          if (nameEl) nameEl.textContent = friend.name || '';
+          if (subnameEl) {
+            if (friend.subName) {
+              subnameEl.textContent = friend.subName;
+              subnameEl.style.display = '';
+            } else {
+              subnameEl.style.display = 'none';
             }
-          } else {
-            linkWrapperEl.style.display = 'none';
+          }
+          if (authorEl) authorEl.textContent = friend.author || '';
+          if (descEl) descEl.textContent = friend.description || '';
+
+          if (linkWrapperEl) {
+            if (friend.url) {
+              linkWrapperEl.style.display = '';
+              if (linkEl) {
+                linkEl.href = friend.url;
+              }
+            } else {
+              linkWrapperEl.style.display = 'none';
+            }
+          }
+
+          avatarBtns.forEach((btn, i) => {
+            btn.classList.toggle('is-active', i === index);
+          });
+
+          mobileDots.forEach((dot, i) => {
+            dot.classList.toggle('is-active', i === index);
+          });
+
+          if (mobileScroll && window.innerWidth < 768) {
+            const activeBtn = mobileAvatarBtns[index];
+            if (activeBtn) {
+              activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+            }
+          }
+
+          if (contentEl) {
+            contentEl.style.opacity = '1';
           }
         }
 
-        // 头像选中态
-        avatarBtns.forEach((btn, i) => {
-          if (i === index) {
-            btn.classList.add('is-active');
-          } else {
-            btn.classList.remove('is-active');
-          }
-        });
-
-        // 圆点指示器
-        mobileDots.forEach((dot, i) => {
-          if (i === index) {
-            dot.classList.add('is-active');
-          } else {
-            dot.classList.remove('is-active');
-          }
-        });
-
-        // 移动端头像滚动到可视区
-        if (mobileScroll && window.innerWidth < 768) {
-          const activeBtn = mobileAvatarBtns[index];
-          if (activeBtn) {
-            activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-          }
+        if (!animate) {
+          applyUpdate();
+          return;
         }
 
-        // 淡入
         if (contentEl) {
-          contentEl.style.opacity = '1';
+          contentEl.style.opacity = '0';
         }
-      }, 150);
-    }
 
-    function goTo(index) {
-      if (index < 0) index = total - 1;
-      if (index >= total) index = 0;
-      currentIndex = index;
-      updateUI(currentIndex);
-    }
+        setTimeout(applyUpdate, 150);
+      }
 
-    function prev() { goTo(currentIndex - 1); }
-    function next() { goTo(currentIndex + 1); }
+      function goTo(index) {
+        if (index < 0) index = total - 1;
+        if (index >= total) index = 0;
+        currentIndex = index;
+        updateUI(currentIndex);
+      }
 
-    // 头像点击
-    avatarBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const idx = parseInt(btn.getAttribute('data-index') || '0', 10);
-        goTo(idx);
-        btn.blur();
+      function prev() { goTo(currentIndex - 1); }
+      function next() { goTo(currentIndex + 1); }
+
+      avatarBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.getAttribute('data-index') || '0', 10);
+          goTo(idx);
+          btn.blur();
+        });
       });
-    });
 
-    // 圆点点击
-    mobileDots.forEach((dot) => {
-      dot.addEventListener('click', () => {
-        const idx = parseInt(dot.getAttribute('data-index') || '0', 10);
-        goTo(idx);
-        dot.blur();
+      mobileDots.forEach((dot) => {
+        dot.addEventListener('click', () => {
+          const idx = parseInt(dot.getAttribute('data-index') || '0', 10);
+          goTo(idx);
+          dot.blur();
+        });
       });
-    });
 
-    // 箭头按钮
-    if (prevBtn) prevBtn.addEventListener('click', prev);
-    if (nextBtn) nextBtn.addEventListener('click', next);
+      if (prevBtn) prevBtn.addEventListener('click', prev);
+      if (nextBtn) nextBtn.addEventListener('click', next);
 
-    // 键盘支持（仅在友链区域可见时生效）
-    const showcaseEl = document.querySelector('.friend-showcase');
-    function handleKeydown(e) {
-      if (!showcaseEl) return;
-      const rect = showcaseEl.getBoundingClientRect();
-      const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-      if (!isVisible) return;
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        prev();
-      } else if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        next();
+      if (keydownHandler) {
+        document.removeEventListener('keydown', keydownHandler);
+      }
+      keydownHandler = function(e) {
+        if (!showcaseEl) return;
+        const rect = showcaseEl.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        if (!isVisible) return;
+        if (e.key === 'ArrowLeft') {
+          e.preventDefault();
+          prev();
+        } else if (e.key === 'ArrowRight') {
+          e.preventDefault();
+          next();
+        }
+      };
+      document.addEventListener('keydown', keydownHandler);
+
+      if (total > 0) {
+        updateUI(0, false);
       }
     }
-    document.addEventListener('keydown', handleKeydown);
 
-    // View Transitions 离开时清理全局监听器
+    // 首次加载及每次 View Transitions 导航完成后重新绑定 DOM 事件
+    document.addEventListener('astro:page-load', setup);
+
+    // 离开页面前清理全局键盘监听，避免重复绑定
     document.addEventListener('astro:before-swap', () => {
-      document.removeEventListener('keydown', handleKeydown);
+      if (keydownHandler) {
+        document.removeEventListener('keydown', keydownHandler);
+        keydownHandler = null;
+      }
     });
-
-    // 初始化
-    if (total > 0) {
-      updateUI(0);
-    }
   })();
 </script>
