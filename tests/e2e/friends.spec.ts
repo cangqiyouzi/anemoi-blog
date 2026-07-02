@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Friends Page', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/friends/');
+    await page.goto('./friends/');
   });
 
   test('has correct title', async ({ page }) => {

@@ -25,7 +25,10 @@ const readTime = calculateReadingTime(post.body || '');
 const wordCount = countWords(post.body || '');
 
 // 获取上一篇/下一篇
-const sortedPosts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const sortedPosts = allPosts.sort((a, b) => {
+  const d = b.data.date.valueOf() - a.data.date.valueOf();
+  return d !== 0 ? d : a.slug.localeCompare(b.slug);
+});
 const currentIndex = sortedPosts.findIndex((p) => p.slug === post.slug);
 const prevPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
 const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
@@ -34,6 +37,7 @@ const formattedDate = post.data.date.toLocaleDateString('zh-CN', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
+  timeZone: 'UTC',
 });
 ---
 

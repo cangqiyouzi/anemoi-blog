@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Archive Page', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/archive/');
+    await page.goto('./archive/');
   });
 
   test('has correct title', async ({ page }) => {
@@ -30,12 +30,12 @@ test.describe('Archive Page', () => {
   });
 
   test('displays post links in archive', async ({ page }) => {
-    const postLinks = page.locator('a[href^="/blog/"]');
+    const postLinks = page.locator('a[href^="/anemoi-blog/blog/"]');
     await expect(postLinks.first()).toBeVisible();
   });
 
   test('post links have correct structure', async ({ page }) => {
-    const postLink = page.locator('a[href^="/blog/"]').first();
+    const postLink = page.locator('a[href^="/anemoi-blog/blog/"]').first();
     await expect(postLink).toBeVisible();
     const title = postLink.locator('h3');
     await expect(title).toBeVisible();

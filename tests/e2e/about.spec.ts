@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('About Page', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/about/');
+    await page.goto('./about/');
   });
 
   test('has correct title', async ({ page }) => {
@@ -56,12 +56,12 @@ test.describe('About Page', () => {
 
   test('has contact links', async ({ page }) => {
     await expect(page.locator('a[href^="mailto:"]')).toContainText('邮箱');
-    await expect(page.locator('a[href="https://twitter.com"]')).toContainText('X / Twitter');
-    await expect(page.locator('a[href="https://github.com"]')).toContainText('GitHub');
+    await expect(page.locator('a[href="https://space.bilibili.com/351144578"]')).toContainText('BiliBili');
+    await expect(page.locator('a[href="https://github.com/cangqiyouzi"]')).toContainText('GitHub');
   });
 
   test('contact links open in new tab', async ({ page }) => {
-    const externalLinks = page.locator('a[href^="https://"]').filter({ hasText: /Twitter|GitHub/ });
+    const externalLinks = page.locator('a[href^="https://"]').filter({ hasText: /BiliBili|GitHub/ });
     const count = await externalLinks.count();
     for (let i = 0; i < count; i++) {
       await expect(externalLinks.nth(i)).toHaveAttribute('target', '_blank');

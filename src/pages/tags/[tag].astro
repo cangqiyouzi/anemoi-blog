@@ -16,7 +16,10 @@ export async function getStaticPaths() {
     props: { 
       tag,
       posts: posts.filter((post) => post.data.tags?.includes(tag))
-        .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
+        .sort((a, b) => {
+          const d = b.data.date.valueOf() - a.data.date.valueOf();
+          return d !== 0 ? d : a.slug.localeCompare(b.slug);
+        }),
     },
   }));
 }

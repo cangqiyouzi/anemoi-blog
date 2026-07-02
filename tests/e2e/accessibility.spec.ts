@@ -2,14 +2,14 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Accessibility', () => {
   test('homepage has lang attribute', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('./');
     const html = page.locator('html');
     const lang = await html.getAttribute('lang');
     expect(lang).toBe('zh-CN');
   });
 
   test('images have alt text', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('./');
     const images = page.locator('img');
     const count = await images.count();
     
@@ -26,7 +26,7 @@ test.describe('Accessibility', () => {
   });
 
   test('interactive elements have accessible names', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('./');
     
     // Buttons should have aria-label or visible text
     const buttons = page.locator('button');
@@ -43,7 +43,7 @@ test.describe('Accessibility', () => {
   });
 
   test('links have visible text', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('./');
     const links = page.locator('a');
     const count = await links.count();
     
@@ -59,7 +59,7 @@ test.describe('Accessibility', () => {
   });
 
   test('heading hierarchy is correct on homepage', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('./');
     const headings = page.locator('h1, h2, h3, h4, h5, h6');
     const count = await headings.count();
     expect(count).toBeGreaterThan(0);
@@ -70,13 +70,13 @@ test.describe('Accessibility', () => {
   });
 
   test('heading hierarchy is correct on blog post', async ({ page }) => {
-    await page.goto('/blog/first-post/');
+    await page.goto('./blog/first-post/');
     const h1Count = await page.locator('h1').count();
     expect(h1Count).toBeGreaterThanOrEqual(1);
   });
 
   test('color contrast is adequate on main text', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('./');
     const body = page.locator('body');
     await expect(body).toBeVisible();
     
@@ -94,7 +94,7 @@ test.describe('Accessibility', () => {
   });
 
   test('focusable elements are focusable', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('./');
     
     // Tab through focusable elements
     const focusableElements = page.locator('a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])');
@@ -110,7 +110,7 @@ test.describe('Accessibility', () => {
   test('reduced motion is respected', async ({ page }) => {
     // Emulate prefers-reduced-motion via CDP
     await page.emulateMedia({ reducedMotion: 'reduce' });
-    await page.goto('/');
+    await page.goto('./');
     
     // With reduced motion, petals should be hidden
     const petals = page.locator('.petal');
@@ -123,13 +123,13 @@ test.describe('Accessibility', () => {
   });
 
   test('has main content landmark', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('./');
     const main = page.locator('main#main-content');
     await expect(main).toBeVisible();
   });
 
   test('ARIA landmarks exist on pages', async ({ page }) => {
-    const pages = ['/', '/archive/', '/about/', '/friends/'];
+    const pages = ['./', './archive/', './about/', './friends/'];
     
     for (const path of pages) {
       await page.goto(path);
@@ -145,7 +145,7 @@ test.describe('Accessibility', () => {
   });
 
   test('form controls have labels', async ({ page }) => {
-    await page.goto('/blog/first-post/');
+    await page.goto('./blog/first-post/');
     
     const inputs = page.locator('input:not([type="hidden"])');
     const inputCount = await inputs.count();
@@ -163,22 +163,22 @@ test.describe('Accessibility', () => {
   });
 
   test('page title changes on navigation', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('./');
     const homeTitle = await page.title();
     
-    await page.goto('/archive/');
+    await page.goto('./archive/');
     const archiveTitle = await page.title();
     expect(archiveTitle).not.toBe(homeTitle);
     expect(archiveTitle).toContain('归档');
     
-    await page.goto('/about/');
+    await page.goto('./about/');
     const aboutTitle = await page.title();
     expect(aboutTitle).not.toBe(archiveTitle);
     expect(aboutTitle).toContain('关于');
   });
 
   test('keyboard navigation works', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('./');
     
     // Press Tab to navigate
     await page.keyboard.press('Tab');

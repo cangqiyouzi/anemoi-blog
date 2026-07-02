@@ -86,10 +86,14 @@ describe('calculateReadingTime', () => {
       expect(calculateReadingTime(text)).toBe(1);
     });
 
-    it('counts Japanese hiragana as non-CJK (treated as words)', () => {
-      const hiragana = 'あ'.repeat(200);
-      const result = calculateReadingTime(hiragana);
-      expect(result).toBeGreaterThanOrEqual(1);
+    it('counts Japanese hiragana as CJK characters', () => {
+      const hiragana = 'あ'.repeat(400);
+      expect(calculateReadingTime(hiragana)).toBe(1);
+    });
+
+    it('counts Japanese katakana as CJK characters', () => {
+      const katakana = 'カ'.repeat(800);
+      expect(calculateReadingTime(katakana)).toBe(2);
     });
   });
 

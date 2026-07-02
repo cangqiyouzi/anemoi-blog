@@ -2,11 +2,11 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Navigation', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    await page.goto('./');
   });
 
   test('navbar is visible on all pages', async ({ page }) => {
-    const pages = ['/', '/archive/', '/friends/', '/about/'];
+    const pages = ['./', './archive/', './friends/', './about/'];
     for (const path of pages) {
       await page.goto(path);
       const nav = page.locator('#main-nav');
@@ -15,22 +15,22 @@ test.describe('Navigation', () => {
   });
 
   test('logo links to homepage', async ({ page }) => {
-    const logo = page.locator('nav a[href="/"]').filter({ hasText: 'anemoi' });
+    const logo = page.locator('nav a[href="/anemoi-blog/"]').filter({ hasText: 'anemoi' });
     await expect(logo).toBeVisible();
     await expect(logo).toContainText('anemoi');
   });
 
   test('nav links work correctly', async ({ page }) => {
     const links = [
-      { href: '/archive/', text: '归档' },
-      { href: '/friends/', text: '友链' },
-      { href: '/about/', text: '关于' },
+      { href: '/anemoi-blog/archive/', text: '归档' },
+      { href: '/anemoi-blog/friends/', text: '友链' },
+      { href: '/anemoi-blog/about/', text: '关于' },
     ];
 
     const isMobile = await page.locator('#mobile-menu-btn').isVisible();
 
     for (const link of links) {
-      await page.goto('/');
+      await page.goto('./');
       if (isMobile) {
         const menuBtn = page.locator('#mobile-menu-btn');
         await menuBtn.click();
@@ -45,22 +45,22 @@ test.describe('Navigation', () => {
         await expect(navLink).toContainText(link.text);
         await navLink.click();
       }
-      await expect(page).toHaveURL(link.href);
+      await expect(page).toHaveURL(new RegExp(link.href + '$'));
     }
   });
 
   test('active nav link has indicator', async ({ page }) => {
-    await page.goto('/archive/');
+    await page.goto('./archive/');
     const isMobile = await page.locator('#mobile-menu-btn').isVisible();
     if (isMobile) {
       await page.locator('#mobile-menu-btn').click();
       await page.waitForTimeout(300);
       const mobileMenu = page.locator('#mobile-menu');
-      const activeLink = mobileMenu.locator('a[href="/archive/"]');
+      const activeLink = mobileMenu.locator('a[href="/anemoi-blog/archive/"]');
       await expect(activeLink).toBeVisible();
     } else {
       const desktopNav = page.locator('.hidden.md\\:flex');
-      const activeLink = desktopNav.locator('a[href="/archive/"]');
+      const activeLink = desktopNav.locator('a[href="/anemoi-blog/archive/"]');
       await expect(activeLink).toBeVisible();
     }
   });
@@ -147,10 +147,10 @@ test.describe('Navigation', () => {
     await page.waitForTimeout(300);
     
     const mobileMenu = page.locator('#mobile-menu');
-    await expect(mobileMenu.locator('a[href="/"]')).toContainText('首页');
-    await expect(mobileMenu.locator('a[href="/archive/"]')).toContainText('归档');
-    await expect(mobileMenu.locator('a[href="/friends/"]')).toContainText('友链');
-    await expect(mobileMenu.locator('a[href="/about/"]')).toContainText('关于');
+    await expect(mobileMenu.locator('a[href="/anemoi-blog/"]')).toContainText('首页');
+    await expect(mobileMenu.locator('a[href="/anemoi-blog/archive/"]')).toContainText('归档');
+    await expect(mobileMenu.locator('a[href="/anemoi-blog/friends/"]')).toContainText('友链');
+    await expect(mobileMenu.locator('a[href="/anemoi-blog/about/"]')).toContainText('关于');
   });
 
   test('mobile theme toggle exists', async ({ page }) => {

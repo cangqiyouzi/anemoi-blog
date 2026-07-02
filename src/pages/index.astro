@@ -5,9 +5,10 @@ import Hero from "../components/Hero.astro";
 import IntroText from "../components/IntroText.astro";
 import TimelineNews from "../components/TimelineNews.astro";
 import TagCloud from "../components/TagCloud.astro";
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
+const posts = (await getCollection("blog")).sort((a, b) => {
+  const d = b.data.date.valueOf() - a.data.date.valueOf();
+  return d !== 0 ? d : a.slug.localeCompare(b.slug);
+});
 
 // 只取前3篇用于首页展示
 const featuredPosts = posts.slice(0, 3);

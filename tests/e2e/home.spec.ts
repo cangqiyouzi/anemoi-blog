@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Homepage', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    await page.goto('./');
   });
 
   test('has correct title', async ({ page }) => {
@@ -35,7 +35,7 @@ test.describe('Homepage', () => {
   });
 
   test('displays featured blog posts in timeline', async ({ page }) => {
-    const postLinks = page.locator('a[href^="/blog/"]').first();
+    const postLinks = page.locator('a[href^="/anemoi-blog/blog/"]').first();
     await expect(postLinks).toBeVisible();
   });
 
@@ -46,10 +46,10 @@ test.describe('Homepage', () => {
 
   test('has working navigation links', async ({ page }) => {
     const desktopNav = page.locator('.hidden.md\\:flex');
-    await expect(desktopNav.locator('a[href="/"]')).toContainText('首页');
-    await expect(desktopNav.locator('a[href="/archive/"]')).toContainText('归档');
-    await expect(desktopNav.locator('a[href="/friends/"]')).toContainText('友链');
-    await expect(desktopNav.locator('a[href="/about/"]')).toContainText('关于');
+    await expect(desktopNav.locator('a[href="/anemoi-blog/"]')).toContainText('首页');
+    await expect(desktopNav.locator('a[href="/anemoi-blog/archive/"]')).toContainText('归档');
+    await expect(desktopNav.locator('a[href="/anemoi-blog/friends/"]')).toContainText('友链');
+    await expect(desktopNav.locator('a[href="/anemoi-blog/about/"]')).toContainText('关于');
   });
 
   test('has footer with site name', async ({ page }) => {
@@ -59,7 +59,7 @@ test.describe('Homepage', () => {
 
   test('has favicon link', async ({ page }) => {
     const favicon = page.locator('link[rel="icon"]');
-    await expect(favicon).toHaveAttribute('href', '/favicon.svg');
+    await expect(favicon).toHaveAttribute('href', '/anemoi-blog/favicon.svg');
   });
 
   test('has meta description', async ({ page }) => {
@@ -78,7 +78,7 @@ test.describe('Homepage', () => {
   });
 
   test('has link to archive page at bottom', async ({ page }) => {
-    await expect(page.locator('a[href="/archive/"]').last()).toContainText('查看全部文章');
+    await expect(page.locator('a[href="/anemoi-blog/archive/"]').last()).toContainText('查看全部文章');
   });
 
   test('hero background image loads', async ({ page }) => {

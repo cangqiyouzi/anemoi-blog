@@ -3,22 +3,23 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ScrollReveal from '../components/ScrollReveal.astro';
 
-const posts = (await getCollection('blog')).sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
+const posts = (await getCollection('blog')).sort((a, b) => {
+  const d = b.data.date.valueOf() - a.data.date.valueOf();
+  return d !== 0 ? d : a.slug.localeCompare(b.slug);
+});
 
 // 按年月分组
 const grouped = new Map<string, typeof posts>();
 posts.forEach((post) => {
   const date = post.data.date;
-  const key = `${date.getFullYear()}年${date.getMonth() + 1}月`;
+  const key = `${date.getUTCFullYear()}年${date.getUTCMonth() + 1}月`;
   if (!grouped.has(key)) grouped.set(key, []);
   grouped.get(key)!.push(post);
 });
 
 function formatDate(date: Date) {
-  const m = String(date.getMonth() + 1).padStart(2, '0');
-  const d = String(date.getDate()).padStart(2, '0');
+  const m = String(date.getUTCMonth() + 1).padStart(2, '0');
+  const d = String(date.getUTCDate()).padStart(2, '0');
   return `${m}.${d}`;
 }
 
