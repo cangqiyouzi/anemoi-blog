@@ -18,7 +18,7 @@ const withBase = (path: string) => base + (path.startsWith('/') ? path : '/' + p
 ---
 
 {(prev || next) && (
-  <nav class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 pt-8 border-t border-anemoi-accent/20">
+  <nav aria-label="文章导航" class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16 pt-8 border-t border-anemoi-accent/20">
     <!-- 上一篇 -->
     {prev ? (
       <a 

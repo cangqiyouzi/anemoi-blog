@@ -23,44 +23,17 @@ export default {
         'anemoi-sky': 'var(--color-sky)',
       },
       animation: {
-        'float': 'float 6s ease-in-out infinite',
         'fade-in': 'fadeIn 1.2s ease-out forwards',
-        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
         'slide-down': 'slideDown 0.4s ease-out forwards',
-        'breathe': 'breathe 4s ease-in-out infinite',
-        'petal-fall': 'petalFall 12s linear infinite',
-        'petal-drift': 'petalDrift 8s ease-in-out infinite',
       },
       keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-10px)' },
-        },
         fadeIn: {
           '0%': { opacity: '0', transform: 'translateY(20px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        fadeInUp: {
-          '0%': { opacity: '0', transform: 'translateY(30px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         slideDown: {
           '0%': { opacity: '0', transform: 'translateY(-10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        breathe: {
-          '0%, 100%': { opacity: '0.3' },
-          '50%': { opacity: '0.8' },
-        },
-        petalFall: {
-          '0%': { transform: 'translateY(-10vh) translateX(0) rotate(0deg)', opacity: '0' },
-          '10%': { opacity: '0.7' },
-          '90%': { opacity: '0.7' },
-          '100%': { transform: 'translateY(110vh) translateX(30px) rotate(360deg)', opacity: '0' },
-        },
-        petalDrift: {
-          '0%, 100%': { transform: 'translateX(0)' },
-          '50%': { transform: 'translateX(20px)' },
         },
       },
     },

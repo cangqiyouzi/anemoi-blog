@@ -8,8 +8,7 @@ tags: ['AI', '思考', '翻译']
 
 *Polished from the Chinese original by Wang Chao, with attention to metaphor consistency, idiom, and rhythm.*
 
-## 01
-## Time Collapse
+## 01. Time Collapse
 
 In 2020, if you wanted to know the 3D structure of a protein, what would you do?
 
@@ -50,8 +49,7 @@ Now that premise is cracking. Intelligence can be copied, ported, and scaled alm
 
 ---
 
-## 02
-## The First Half: Ten Thousand Years of Scarcity
+## 02. The First Half: Ten Thousand Years of Scarcity
 
 To understand the second half, we must first review the rules of the first. On the surface, it looks like a tale of production revolutions. Underneath, it is a ten-thousand-year war in which a species keeps hurling its rarest resource—intelligence—against the wall built by scarcity.
 
@@ -132,8 +130,7 @@ And it is also where the Second Half quietly begins.
 
 ---
 
-## 03
-## Historical Mirror: Leaps and Liberation
+## 03. Historical Mirror: Leaps and Liberation
 
 **Every leap in productivity generates a "production surplus"; and this "surplus" liberates more people from the daily grind of survival labor.**
 
@@ -242,8 +239,7 @@ This is the most profound turning point in the history of human civilization.
 
 ---
 
-## 04
-## The Iron Law of Transitions: History Is Not Gentle
+## 04. The Iron Law of Transitions: History Is Not Gentle
 
 From a distance, the end of the First Half looks like a happy turning point: intelligence becomes abundant, drudgery falls away, and humanity steps into a world of creativity and choice.
 
@@ -291,8 +287,7 @@ Expecting to glide smoothly from the First Half’s survival narrative into a Se
 
 ---
 
-## 05
-## Three Fronts That Decide the Future
+## 05. Three Fronts That Decide the Future
 
 If the next decade is a storm, it is not a directionless chaos. Standing in the eye of the storm, we can see three forces pulling in different directions—these are not short-term events, but **three unavoidable structural questions**:
 
@@ -372,8 +367,7 @@ How we handle these entanglements will largely decide what the Second Half feels
 
 ---
 
-## 06
-## Epilogue: The Unwritten Half
+## 06. Epilogue: The Unwritten Half
 
 If we had to summarize the First Half of civilization in one line, it might be:
 

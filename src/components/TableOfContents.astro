@@ -17,7 +17,7 @@ const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
       <h4 class="text-xs font-sans tracking-[0.2em] text-anemoi-muted mb-4 uppercase">
         目录
       </h4>
-      <nav class="space-y-2">
+      <nav aria-label="目录" class="space-y-2">
         {tocHeadings.map((heading) => (
           <a
             href={`#${heading.slug}`}
@@ -49,6 +49,7 @@ const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
     </button>
     <nav 
       id="mobile-toc"
+      aria-label="目录"
       class="hidden bg-anemoi-ivory/80 border border-t-0 border-anemoi-accent/10 px-4 py-3 space-y-2"
     >
       {tocHeadings.map((heading) => (
