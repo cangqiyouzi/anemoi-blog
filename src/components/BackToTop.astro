@@ -3,7 +3,7 @@
 
 <button
   id="back-to-top"
-  class="fixed bottom-8 right-8 z-40 w-10 h-10 rounded-full border border-anemoi-accent/30 bg-anemoi-bg/80 backdrop-blur-sm flex items-center justify-center text-anemoi-muted hover:text-anemoi-text hover:border-anemoi-accent/60 transition-all duration-300 opacity-0 translate-y-4 pointer-events-none"
+  class="fixed bottom-8 right-8 z-40 w-10 h-10 rounded-full border border-anemoi-accent/30 bg-anemoi-bg/80 backdrop-blur-sm flex items-center justify-center text-anemoi-muted hover:text-anemoi-text hover:border-anemoi-accent/60 transition-all duration-300 opacity-0 translate-y-4 pointer-events-none invisible"
   aria-label="返回顶部"
 >
   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -19,10 +19,10 @@
 
       const toggle = () => {
         if (window.scrollY > window.innerHeight * 0.5) {
-          btn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+          btn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none', 'invisible');
           btn.classList.add('opacity-100', 'translate-y-0');
         } else {
-          btn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+          btn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none', 'invisible');
           btn.classList.remove('opacity-100', 'translate-y-0');
         }
       };

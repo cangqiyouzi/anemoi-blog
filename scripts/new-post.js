@@ -21,7 +21,7 @@ if (!title) {
 
 // 生成 slug：日期 + 随机短串，避免中文文件名问题
 const now = new Date();
-const datePart = now.toISOString().slice(0, 10); // YYYY-MM-DD
+const datePart = now.toLocaleDateString('sv-SE'); // YYYY-MM-DD (local time)
 const rand = Math.random().toString(36).slice(2, 6);
 const slug = `${datePart}-${rand}`;
 const filename = `${slug}.md`;

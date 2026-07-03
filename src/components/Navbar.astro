@@ -155,25 +155,27 @@ const navLinks = [
     const iconOpen = document.getElementById('menu-icon-open');
     const iconClose = document.getElementById('menu-icon-close');
     let menuOpen = false;
-    
-    menuBtn?.addEventListener('click', () => {
-      menuOpen = !menuOpen;
-      if (menuOpen) {
-        mobileMenu!.classList.remove('max-h-0', 'opacity-0');
-        mobileMenu!.classList.add('max-h-64', 'opacity-100');
-        iconOpen!.classList.add('hidden');
-        iconClose!.classList.remove('hidden');
-        menuBtn.setAttribute('aria-expanded', 'true');
-        menuBtn.setAttribute('aria-label', '关闭菜单');
-      } else {
-        mobileMenu!.classList.add('max-h-0', 'opacity-0');
-        mobileMenu!.classList.remove('max-h-64', 'opacity-100');
-        iconOpen!.classList.remove('hidden');
-        iconClose!.classList.add('hidden');
-        menuBtn.setAttribute('aria-expanded', 'false');
-        menuBtn.setAttribute('aria-label', '打开菜单');
-      }
-    });
+
+    if (menuBtn && mobileMenu && iconOpen && iconClose) {
+      menuBtn.addEventListener('click', () => {
+        menuOpen = !menuOpen;
+        if (menuOpen) {
+          mobileMenu.classList.remove('max-h-0', 'opacity-0');
+          mobileMenu.classList.add('max-h-64', 'opacity-100');
+          iconOpen.classList.add('hidden');
+          iconClose.classList.remove('hidden');
+          menuBtn.setAttribute('aria-expanded', 'true');
+          menuBtn.setAttribute('aria-label', '关闭菜单');
+        } else {
+          mobileMenu.classList.add('max-h-0', 'opacity-0');
+          mobileMenu.classList.remove('max-h-64', 'opacity-100');
+          iconOpen.classList.remove('hidden');
+          iconClose.classList.add('hidden');
+          menuBtn.setAttribute('aria-expanded', 'false');
+          menuBtn.setAttribute('aria-label', '打开菜单');
+        }
+      });
+    }
     
     // 主题切换
     const toggleTheme = () => {
@@ -218,6 +220,9 @@ const navLinks = [
     };
     initIcons();
     
+    // View Transitions 页面切换前立即收起菜单
+    document.addEventListener('astro:before-swap', resetMenu);
+
     // View Transitions 页面切换后更新图标和高亮
     document.addEventListener('astro:page-load', () => {
       initIcons();
