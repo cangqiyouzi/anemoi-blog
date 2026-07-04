@@ -49,10 +49,10 @@ const encodedUrl = encodeURIComponent(url);
 </div>
 
 <script>
-  (function() {
+  document.addEventListener('astro:page-load', () => {
     const copyBtn = document.getElementById('copy-link-btn');
     const toast = document.getElementById('copy-toast');
-    
+
     copyBtn?.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(window.location.href);
@@ -64,5 +64,5 @@ const encodedUrl = encodeURIComponent(url);
         console.error('Failed to copy:', err);
       }
     });
-  })();
+  });
 </script>
