@@ -69,14 +69,21 @@ const tocHeadings = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 )}
 
 <script>
-  (function() {
+  function initMobileToc() {
     const toggle = document.getElementById('mobile-toc-toggle');
     const toc = document.getElementById('mobile-toc');
     const arrow = document.getElementById('toc-arrow');
-    
-    toggle?.addEventListener('click', () => {
+    // 同一 DOM 元素只绑定一次，避免初始加载时 init + astro:page-load 双重绑定
+    if (!toggle || toggle.dataset.tocBound === 'true') return;
+    toggle.dataset.tocBound = 'true';
+
+    toggle.addEventListener('click', () => {
       toc?.classList.toggle('hidden');
       arrow?.classList.toggle('rotate-180');
     });
-  })();
+  }
+
+  initMobileToc();
+  // 打包后的模块脚本只执行一次；View Transitions 软导航后需对新 DOM 重新绑定
+  document.addEventListener('astro:page-load', initMobileToc);
 </script>

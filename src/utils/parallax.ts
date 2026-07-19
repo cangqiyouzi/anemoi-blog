@@ -4,7 +4,7 @@
  * 自动处理 View Transitions 下的监听器注册/清理
  */
 export function initParallax() {
-  const parallaxElements = document.querySelectorAll('[data-parallax-speed]');
+  const parallaxElements = document.querySelectorAll<HTMLElement>('[data-parallax-speed]');
   if (parallaxElements.length === 0) return;
 
   // prefers-reduced-motion 时禁用视差效果
@@ -16,7 +16,9 @@ export function initParallax() {
     parallaxElements.forEach((el) => {
       const speed = parseFloat(el.getAttribute('data-parallax-speed') || '0');
       const yPos = scrollY * speed;
-      (el as HTMLElement).style.transform = `translateY(${yPos}px)`;
+      // 使用独立的 translate 属性而非 transform，
+      // 避免内联样式整体覆盖 Tailwind 的 scale-110 等 transform 类
+      el.style.translate = `0 ${yPos}px`;
     });
   };
 
@@ -38,3 +40,7 @@ export function initParallax() {
   };
   document.addEventListener('astro:before-swap', cleanup, { once: true });
 }
+
+// 打包后的模块脚本在整个会话中只会执行一次，
+// 挂到 astro:page-load 上，保证 View Transitions 软导航后对新 DOM 重新初始化
+document.addEventListener('astro:page-load', initParallax);

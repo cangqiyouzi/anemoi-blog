@@ -126,7 +126,7 @@ const navLinks = [
     const nav = document.getElementById('main-nav');
     if (!nav) return;
     
-    const isTransparent = nav.dataset.transparent !== 'false';
+    let isTransparent = nav.dataset.transparent !== 'false';
     
     const updateNav = () => {
       if (window.scrollY > 80) {
@@ -226,6 +226,13 @@ const navLinks = [
 
     // View Transitions 页面切换后更新图标和高亮
     document.addEventListener('astro:page-load', () => {
+      // transition:persist 会保留旧 DOM，需从新页面内容重读透明配置
+      const main = document.getElementById('main-content');
+      if (main) {
+        isTransparent = main.dataset.transparentNav !== 'false';
+        nav.dataset.transparent = isTransparent ? 'true' : 'false';
+      }
+      updateNav();
       initIcons();
       resetMenu();
       updateActiveLink();

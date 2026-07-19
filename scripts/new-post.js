@@ -32,8 +32,11 @@ if (existsSync(filepath)) {
   process.exit(1);
 }
 
+// YAML 单引号字符串中的单引号需写为两个（''），否则生成非法 frontmatter
+const escapedTitle = title.replace(/'/g, "''");
+
 const template = `---
-title: '${title}'
+title: '${escapedTitle}'
 date: ${datePart}
 description: ''
 # coverImage: '/images/cover.jpg'
